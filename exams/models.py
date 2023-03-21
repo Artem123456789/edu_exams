@@ -80,6 +80,7 @@ class OrdinaryQuestionUserAnswer(TimeStampedModel):
         Ответ пользователя на вопрос с одним вариантом ответа
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
     question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True)
     answer = models.ForeignKey(OrdinaryQuestionAnswer, on_delete=models.SET_NULL, null=True)
 
@@ -128,5 +129,5 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
     option = models.ForeignKey(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
     option_answer = models.ForeignKey(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True)
 
-    def __str(self):
+    def __str__(self):
         return f"{str(self.option)} {str(self.option_answer)}"
