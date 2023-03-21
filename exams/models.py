@@ -16,7 +16,7 @@ class School(NamedModel):
     """
         Образовательное учреждение
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
 
     class Meta:
         verbose_name = _("Образовательное учреждение")
@@ -30,7 +30,7 @@ class Subject(NamedModel):
     """
         Дисциплина
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -45,7 +45,7 @@ class Exam(NamedModel):
     """
         Экзамен
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -60,7 +60,7 @@ class OrdinaryQuestion(QuestionModel):
     """
         Вопрос с одним вариантом ответа
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -88,7 +88,7 @@ class StudentExam(TimeStampedModel):
     """
         Экзамен студента
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
 
@@ -104,7 +104,7 @@ class OrdinaryQuestionUserAnswer(TimeStampedModel):
     """
         Ответ пользователя на вопрос с одним вариантом ответа
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
     question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True)
     answer = models.ForeignKey(OrdinaryQuestionAnswer, on_delete=models.SET_NULL, null=True)
@@ -121,7 +121,7 @@ class ComparisonQuestion(QuestionModel):
     """
         Вопрос с сопоставлением ответов
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -133,7 +133,7 @@ class ComparisonQuestionOption(models.Model):
     """
         Опция вопроса с сопоставлением ответа
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
 
@@ -149,7 +149,7 @@ class ComparisonQuestionOptionAnswer(models.Model):
     """
         Ответ на опцию вопроса с сопоставлением
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     text = models.TextField()
     option = models.OneToOneField(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
 
@@ -165,7 +165,7 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
     """
         Ответ пользователя на вопрос с сопоставлением ответов
     """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
     option = models.ForeignKey(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
     option_answer = models.ForeignKey(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True)
