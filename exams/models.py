@@ -53,7 +53,7 @@ class Exam(NamedModel):
         verbose_name_plural = _("Экзамены")
 
     def __str__(self):
-        return f"{self.name} {self.subject.name}"
+        return self.name
 
 
 class OrdinaryQuestion(QuestionModel):
