@@ -10,5 +10,10 @@ router.register(
     exams_views.OrdinaryQuestionUserAnswerViewSet,
     basename="ordinary_question_user_answers"
 )
+router.register(
+    "exams",
+    exams_views.ExamViewSet,
+    basename="exams"
+)
 
 urlpatterns = router.get_urls()
