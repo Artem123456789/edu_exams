@@ -20,7 +20,6 @@ class ExamViewSet(
     GenericViewSet,
 ):
     queryset = Exam.objects.all()
-    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         return {
@@ -33,7 +32,6 @@ class StudentExamsViewSet(
     GenericViewSet,
 ):
     queryset = StudentExam.objects.all()
-    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         return {
@@ -46,7 +44,6 @@ class OrdinaryQuestionUserAnswerViewSet(
     GenericViewSet,
 ):
     queryset = OrdinaryQuestionUserAnswer.objects.all()
-    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         return {

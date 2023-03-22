@@ -90,7 +90,7 @@ class StudentExam(TimeStampedModel):
         Экзамен студента
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user_name = models.CharField(max_length=100, default="")
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
 
     class Meta:

@@ -90,12 +90,12 @@ class OrdinaryQuestionAnswerAdmin(admin.ModelAdmin):
 @admin.register(StudentExam)
 class StudentExamAdmin(admin.ModelAdmin):
     list_display = (
-        "user",
+        "user_name",
         "exam",
     )
 
     list_filter = (
-        "user",
+        "user_name",
         "exam",
     )
 
