@@ -72,6 +72,7 @@ class OrdinaryQuestionAnswer(models.Model):
     """
         Ответ на вопрос с одним вариантом ответа
     """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
     is_correct = models.BooleanField()
@@ -97,7 +98,7 @@ class StudentExam(TimeStampedModel):
         verbose_name_plural = _("Экзамены студента")
 
     def __str__(self):
-        return f"{self.user.name} {self.exam}"
+        return f"{self.user} {self.exam}"
 
 
 class OrdinaryQuestionUserAnswer(TimeStampedModel):
