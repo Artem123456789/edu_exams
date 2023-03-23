@@ -98,7 +98,7 @@ class StudentExam(TimeStampedModel):
         verbose_name_plural = _("Экзамены студента")
 
     def __str__(self):
-        return f"{self.user} {self.exam}"
+        return f"{self.user_name} {self.exam}"
 
 
 class OrdinaryQuestionUserAnswer(TimeStampedModel):
@@ -151,6 +151,7 @@ class ComparisonQuestionOptionAnswer(models.Model):
         Ответ на опцию вопроса с сопоставлением
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
     option = models.OneToOneField(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
 

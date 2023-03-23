@@ -4,13 +4,16 @@ from rest_framework.permissions import IsAuthenticated
 from exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
-    Exam,
+    Exam, ComparisonQuestionUserAnswer,
 )
 from rest_framework.viewsets import GenericViewSet
 
+from exams.serializers.answers_serializers import (
+    OrdinaryQuestionUserAnswerCreateSerializer,
+    ComparisonQuestionUserAnswerCreateSerializer,
+)
 from exams.serializers.exams_serializers import (
     StudentExamCreateSerializer,
-    OrdinaryQuestionUserAnswerCreateSerializer,
     ExamRetrieveSerializer,
 )
 
@@ -48,4 +51,16 @@ class OrdinaryQuestionUserAnswerViewSet(
     def get_serializer_class(self):
         return {
             "create": OrdinaryQuestionUserAnswerCreateSerializer,
+        }[self.action]
+
+
+class ComparisonQuestionUserAnswerViewSet(
+    generics.CreateAPIView,
+    GenericViewSet,
+):
+    queryset = ComparisonQuestionUserAnswer.objects.all()
+
+    def get_serializer_class(self):
+        return {
+            "create": ComparisonQuestionUserAnswerCreateSerializer,
         }[self.action]
