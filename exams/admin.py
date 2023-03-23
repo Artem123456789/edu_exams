@@ -126,22 +126,22 @@ class ComparisonQuestionAdmin(admin.ModelAdmin):
 @admin.register(ComparisonQuestionOption)
 class ComparisonQuestionOptionAdmin(admin.ModelAdmin):
     list_display = (
-        "question",
+        "text",
     )
 
     list_filter = (
-        "question",
+        "text",
     )
 
 
 @admin.register(ComparisonQuestionOptionAnswer)
 class ComparisonQuestionOptionAnswerAdmin(admin.ModelAdmin):
     list_display = (
-        "option",
+        "text",
     )
 
     list_filter = (
-        "option",
+        "text",
     )
 
 

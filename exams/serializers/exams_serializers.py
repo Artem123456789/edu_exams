@@ -3,9 +3,7 @@ from rest_framework import serializers
 from exams.models import (
     StudentExam,
     Exam,
-    OrdinaryQuestionUserAnswer,
     OrdinaryQuestion,
-    OrdinaryQuestionAnswer,
     ComparisonQuestion,
 )
 from exams.serializers.questions_serializers import (
@@ -25,6 +23,10 @@ class StudentExamCreateSerializer(serializers.ModelSerializer):
             "user_name",
             "exam",
         ]
+
+
+class StudentExamResultsOutputSerializer(BaseSerializer):
+    points = serializers.IntegerField()
 
 
 class ExamRetrieveSerializer(serializers.ModelSerializer):

@@ -51,6 +51,7 @@ class ComparisonQuestionOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ComparisonQuestionOption
         fields = [
+            "uuid",
             "text",
         ]
 
@@ -60,6 +61,7 @@ class ComparisonQuestionOptionAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ComparisonQuestionOptionAnswer
         fields = [
+            "uuid",
             "text",
         ]
 

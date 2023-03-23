@@ -62,6 +62,7 @@ class OrdinaryQuestion(QuestionModel):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+    right_answer_points = models.SmallIntegerField(null=True)
 
     class Meta:
         verbose_name = _("Вопрос с одним вариантом ответа")
@@ -130,22 +131,6 @@ class ComparisonQuestion(QuestionModel):
         verbose_name_plural = _("Вопросы с сопоставлением ответов")
 
 
-class ComparisonQuestionOption(models.Model):
-    """
-        Опция вопроса с сопоставлением ответа
-    """
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
-    text = models.TextField()
-
-    class Meta:
-        verbose_name = _("Опция вопроса с сопоставлением ответа")
-        verbose_name_plural = _("Опции вопроса с сопоставлением ответа")
-
-    def __str__(self):
-        return self.text[:20]
-
-
 class ComparisonQuestionOptionAnswer(models.Model):
     """
         Ответ на опцию вопроса с сопоставлением
@@ -153,11 +138,29 @@ class ComparisonQuestionOptionAnswer(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
     text = models.TextField()
-    option = models.OneToOneField(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = _("Ответ на опцию вопроса с сопоставлением")
         verbose_name_plural = _("Ответы на опцию вопроса с сопоставлением")
+
+    def __str__(self):
+        return self.text[:20]
+
+
+class ComparisonQuestionOption(models.Model):
+    """
+        Опция вопроса с сопоставлением ответа
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
+    text = models.TextField()
+    option_answer = models.OneToOneField(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True)
+
+    right_answer_points = models.SmallIntegerField(null=True)
+
+    class Meta:
+        verbose_name = _("Опция вопроса с сопоставлением ответа")
+        verbose_name_plural = _("Опции вопроса с сопоставлением ответа")
 
     def __str__(self):
         return self.text[:20]
