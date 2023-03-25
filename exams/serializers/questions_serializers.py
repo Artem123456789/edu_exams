@@ -8,11 +8,17 @@ from exams.models import (
     ComparisonQuestion,
     OrdinaryQuestionFileModel,
     ComparisonQuestionFileModel,
+    OrdinaryQuestionAnswerFile,
+    ComparisonQuestionOptionFile,
+    ComparisonQuestionOptionAnswerFile,
 )
 
 from exams.serializers.files_serialziers import (
     OrdinaryQuestionFileModelSerializer,
     ComparisonQuestionFileModelSerializer,
+    OrdinaryQuestionAnswerFileModelSerializer,
+    ComparisonQuestionOptionFileModelSerializer,
+    ComparisonQuestionOptionAnswerFileModelSerializer,
 )
 
 """
@@ -21,12 +27,18 @@ from exams.serializers.files_serialziers import (
 
 
 class OrdinaryQuestionAnswerSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    def get_files(self, answer: OrdinaryQuestionAnswer):
+        files = OrdinaryQuestionAnswerFile.objects.filter(answer=answer)
+        return OrdinaryQuestionAnswerFileModelSerializer(files, many=True).data
 
     class Meta:
         model = OrdinaryQuestionAnswer
         fields = [
             "uuid",
             "text",
+            "files",
         ]
 
 
@@ -59,22 +71,34 @@ class OrdinaryQuestionSerializer(serializers.ModelSerializer):
 
 
 class ComparisonQuestionOptionSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    def get_files(self, option: ComparisonQuestionOption):
+        files = ComparisonQuestionOptionFile.objects.filter(option=option)
+        return ComparisonQuestionOptionFileModelSerializer(files, many=True).data
 
     class Meta:
         model = ComparisonQuestionOption
         fields = [
             "uuid",
             "text",
+            "files",
         ]
 
 
 class ComparisonQuestionOptionAnswerSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    def get_files(self, option_answer: ComparisonQuestionOptionAnswer):
+        files = ComparisonQuestionOptionAnswerFile.objects.filter(option_answer=option_answer)
+        return ComparisonQuestionOptionAnswerFileModelSerializer(files, many=True).data
 
     class Meta:
         model = ComparisonQuestionOptionAnswer
         fields = [
             "uuid",
             "text",
+            "files",
         ]
 
 

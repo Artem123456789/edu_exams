@@ -13,6 +13,9 @@ from .models import (
     ComparisonQuestionUserAnswer,
     OrdinaryQuestionFileModel,
     ComparisonQuestionFileModel,
+    OrdinaryQuestionAnswerFile,
+    ComparisonQuestionOptionFile,
+    ComparisonQuestionOptionAnswerFile,
 )
 
 
@@ -172,5 +175,29 @@ class OrdinaryQuestionFileModelAdmin(admin.ModelAdmin):
 class ComparisonQuestionFileModelAdmin(admin.ModelAdmin):
     list_display = (
         "question",
+        "file",
+    )
+
+
+@admin.register(OrdinaryQuestionAnswerFile)
+class OrdinaryQuestionAnswerFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "answer",
+        "file",
+    )
+
+
+@admin.register(ComparisonQuestionOptionFile)
+class ComparisonQuestionOptionFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "option",
+        "file",
+    )
+
+
+@admin.register(ComparisonQuestionOptionAnswerFile)
+class ComparisonQuestionOptionAnswerFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "option_answer",
         "file",
     )

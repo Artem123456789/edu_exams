@@ -8,6 +8,9 @@ from exams.contants import FileType
 from exams.utils.file_upload import (
     file_ordinary_question_upload,
     file_comparison_question_upload,
+    file_ordinary_answer_upload,
+    file_comparison_option_upload,
+    file_comparison_option_answer_upload,
 )
 from libs.base_models import (
     NamedModel,
@@ -215,8 +218,56 @@ class ComparisonQuestionFileModel(models.Model):
     question = models.ForeignKey(
         ComparisonQuestion, on_delete=models.CASCADE, related_name="files"
     )
-    file = models.FileField(upload_to=file_ordinary_question_upload)
+    file = models.FileField(upload_to=file_comparison_question_upload)
 
     class Meta:
         verbose_name = _("Файл вопроса с сопоставлением")
         verbose_name_plural = _("Файлы вопросов с сопоставлением")
+
+
+class OrdinaryQuestionAnswerFile(models.Model):
+    """
+        Файлы ответов на обычные вопросы
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    answer = models.ForeignKey(
+        OrdinaryQuestionAnswer, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_ordinary_answer_upload)
+
+    class Meta:
+        verbose_name = _("Файл ответа на обычный вопрос")
+        verbose_name_plural = _("Файлы ответов на обычные вопрос")
+
+
+class ComparisonQuestionOptionFile(models.Model):
+    """
+        Файлы опций вопросов с сопоставлением
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    option = models.ForeignKey(
+        ComparisonQuestionOption, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_comparison_option_upload)
+
+    class Meta:
+        verbose_name = _("Файл опции вопроса с сопоставлением")
+        verbose_name_plural = _("Файлы опций вопросов с сопоставлением")
+
+
+class ComparisonQuestionOptionAnswerFile(models.Model):
+    """
+        Файлы ответов на опции вопросов с сопоставлением
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    option_answer = models.ForeignKey(
+        ComparisonQuestionOptionAnswer, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_comparison_option_answer_upload)
+
+    class Meta:
+        verbose_name = _("Файл ответа на опцию вопроса с сопоставлением")
+        verbose_name_plural = _("Файлы ответов на опции вопросов с сопоставлением")
