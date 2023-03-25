@@ -6,8 +6,12 @@ from exams.models import (
     ComparisonQuestionOption,
     ComparisonQuestionOptionAnswer,
     ComparisonQuestion,
+    OrdinaryQuestionFileModel,
 )
 
+from exams.serializers.files_serialziers import (
+    OrdinaryQuestionFileModelSerializer,
+)
 
 """
     Ordinary question answer
@@ -26,10 +30,15 @@ class OrdinaryQuestionAnswerSerializer(serializers.ModelSerializer):
 
 class OrdinaryQuestionSerializer(serializers.ModelSerializer):
     answers = serializers.SerializerMethodField()
+    files = serializers.SerializerMethodField()
 
     def get_answers(self, question: OrdinaryQuestion):
         question_answers = OrdinaryQuestionAnswer.objects.filter(question=question)
         return OrdinaryQuestionAnswerSerializer(question_answers, many=True).data
+
+    def get_files(self, question: OrdinaryQuestion):
+        files = OrdinaryQuestionFileModel.objects.filter(question=question)
+        return OrdinaryQuestionFileModelSerializer(files, many=True).data
 
     class Meta:
         model = OrdinaryQuestion
@@ -38,6 +47,7 @@ class OrdinaryQuestionSerializer(serializers.ModelSerializer):
             "header",
             "description",
             "answers",
+            "files",
         ]
 
 

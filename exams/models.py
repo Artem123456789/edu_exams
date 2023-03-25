@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext as _
 
+from exams.contants import FileType
+from exams.utils.file_upload import file_ordinary_question_upload
 from libs.base_models import (
     NamedModel,
     QuestionModel,
@@ -181,3 +183,19 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
 
     def __str__(self):
         return f"{str(self.option)} {str(self.option_answer)}"
+
+
+class OrdinaryQuestionFileModel(models.Model):
+    """
+        Файлы обычных вопросов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    question = models.ForeignKey(
+        OrdinaryQuestion, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_ordinary_question_upload)
+
+    class Meta:
+        verbose_name = _("Файл обычного вороса")
+        verbose_name_plural = _("Файлы обычных вопросов")
