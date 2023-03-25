@@ -193,7 +193,7 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
 
 # File models
 
-class OrdinaryQuestionFileModel(models.Model):
+class OrdinaryQuestionFile(models.Model):
     """
         Файлы обычных вопросов
     """
@@ -209,7 +209,7 @@ class OrdinaryQuestionFileModel(models.Model):
         verbose_name_plural = _("Файлы обычных вопросов")
 
 
-class ComparisonQuestionFileModel(models.Model):
+class ComparisonQuestionFile(models.Model):
     """
         Файлы вопросов с сопоставлением
     """

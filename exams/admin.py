@@ -11,8 +11,8 @@ from .models import (
     ComparisonQuestionOption,
     ComparisonQuestionOptionAnswer,
     ComparisonQuestionUserAnswer,
-    OrdinaryQuestionFileModel,
-    ComparisonQuestionFileModel,
+    OrdinaryQuestionFile,
+    ComparisonQuestionFile,
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
@@ -163,7 +163,7 @@ class ComparisonQuestionUserAnswerAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(OrdinaryQuestionFileModel)
+@admin.register(OrdinaryQuestionFile)
 class OrdinaryQuestionFileModelAdmin(admin.ModelAdmin):
     list_display = (
         "question",
@@ -171,7 +171,7 @@ class OrdinaryQuestionFileModelAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(ComparisonQuestionFileModel)
+@admin.register(ComparisonQuestionFile)
 class ComparisonQuestionFileModelAdmin(admin.ModelAdmin):
     list_display = (
         "question",

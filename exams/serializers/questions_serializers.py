@@ -6,8 +6,8 @@ from exams.models import (
     ComparisonQuestionOption,
     ComparisonQuestionOptionAnswer,
     ComparisonQuestion,
-    OrdinaryQuestionFileModel,
-    ComparisonQuestionFileModel,
+    OrdinaryQuestionFile,
+    ComparisonQuestionFile,
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
@@ -51,7 +51,7 @@ class OrdinaryQuestionSerializer(serializers.ModelSerializer):
         return OrdinaryQuestionAnswerSerializer(question_answers, many=True).data
 
     def get_files(self, question: OrdinaryQuestion):
-        files = OrdinaryQuestionFileModel.objects.filter(question=question)
+        files = OrdinaryQuestionFile.objects.filter(question=question)
         return OrdinaryQuestionFileModelSerializer(files, many=True).data
 
     class Meta:
@@ -116,7 +116,7 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
         return ComparisonQuestionOptionAnswerSerializer(option_answers, many=True).data
 
     def get_files(self, question: ComparisonQuestion):
-        files = ComparisonQuestionFileModel.objects.filter(question=question)
+        files = ComparisonQuestionFile.objects.filter(question=question)
         return ComparisonQuestionFileModelSerializer(files, many=True).data
 
     class Meta:

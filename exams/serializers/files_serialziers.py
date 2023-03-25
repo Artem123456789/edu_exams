@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from exams.models import (
-    OrdinaryQuestionFileModel,
-    ComparisonQuestionFileModel,
+    OrdinaryQuestionFile,
+    ComparisonQuestionFile,
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
@@ -12,7 +12,7 @@ from exams.models import (
 class OrdinaryQuestionFileModelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = OrdinaryQuestionFileModel
+        model = OrdinaryQuestionFile
         fields = [
             "type",
             "file",
@@ -22,7 +22,7 @@ class OrdinaryQuestionFileModelSerializer(serializers.ModelSerializer):
 class ComparisonQuestionFileModelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = ComparisonQuestionFileModel
+        model = ComparisonQuestionFile
         fields = [
             "type",
             "file",
