@@ -7,10 +7,12 @@ from exams.models import (
     ComparisonQuestionOptionAnswer,
     ComparisonQuestion,
     OrdinaryQuestionFileModel,
+    ComparisonQuestionFileModel,
 )
 
 from exams.serializers.files_serialziers import (
     OrdinaryQuestionFileModelSerializer,
+    ComparisonQuestionFileModelSerializer,
 )
 
 """
@@ -79,6 +81,7 @@ class ComparisonQuestionOptionAnswerSerializer(serializers.ModelSerializer):
 class ComparisonQuestionSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField()
     option_answers = serializers.SerializerMethodField()
+    files = serializers.SerializerMethodField()
 
     def get_options(self, question: ComparisonQuestion):
         options = ComparisonQuestionOption.objects.filter(question=question)
@@ -88,6 +91,10 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
         option_answers = ComparisonQuestionOptionAnswer.objects.filter(question=question)
         return ComparisonQuestionOptionAnswerSerializer(option_answers, many=True).data
 
+    def get_files(self, question: ComparisonQuestion):
+        files = ComparisonQuestionFileModel.objects.filter(question=question)
+        return ComparisonQuestionFileModelSerializer(files, many=True).data
+
     class Meta:
         model = ComparisonQuestion
         fields = [
@@ -96,4 +103,5 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
             "description",
             "options",
             "option_answers",
+            "files",
         ]
