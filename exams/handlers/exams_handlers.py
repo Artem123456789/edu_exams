@@ -66,7 +66,7 @@ class ComparisonQuestionAnswersHandler:
             student_exam: StudentExam,
             option: ComparisonQuestionOption,
     ):
-        return ComparisonQuestionOptionAnswer.objects.filter(
+        return ComparisonQuestionUserAnswer.objects.filter(
             student_exam=student_exam,
             option=option,
         ).count() > 0
