@@ -1,5 +1,8 @@
 import uuid
-from datetime import timedelta
+from datetime import (
+    timedelta,
+    datetime,
+)
 
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -115,7 +118,7 @@ class StudentExam(TimeStampedModel):
         verbose_name = _("Экзамен студента")
         verbose_name_plural = _("Экзамены студента")
 
-    def get_deadline_datetime(self):
+    def get_deadline_datetime(self) -> datetime:
         return (self.created +
                 timedelta(minutes=self.exam.minutes_to_pass)
                 + timedelta(hours=self.exam.hours_to_pass)

@@ -1,3 +1,6 @@
+import pytz
+from django.conf import settings
+
 from rest_framework import serializers, exceptions
 from datetime import datetime
 
@@ -11,6 +14,8 @@ from exams.models import (
     OrdinaryQuestionUserAnswer,
     ComparisonQuestionUserAnswer, StudentExam,
 )
+
+local_tz = pytz.timezone(settings.TIME_ZONE)
 
 
 class OrdinaryQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
@@ -28,7 +33,7 @@ class OrdinaryQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
 
         if student_exam.is_not_finished():
 
-            if datetime.now() > student_exam.get_deadline_datetime():
+            if datetime.now().astimezone(tz=local_tz) > student_exam.get_deadline_datetime().astimezone(tz=local_tz):
                 raise exceptions.PermissionDenied(_("Time is up"))
 
             if OrdinaryQuestionAnswersHandler.is_answered(
@@ -57,7 +62,7 @@ class ComparisonQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
 
         if student_exam.is_not_finished():
 
-            if datetime.now() > student_exam.get_deadline_datetime():
+            if datetime.now().astimezone(tz=local_tz) > student_exam.get_deadline_datetime().astimezone(tz=local_tz):
                 raise exceptions.PermissionDenied(_("Time is up"))
 
             if ComparisonQuestionAnswersHandler.is_question_option_answered(
