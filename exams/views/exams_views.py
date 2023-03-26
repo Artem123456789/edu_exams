@@ -75,11 +75,6 @@ class OrdinaryQuestionUserAnswerViewSet(
             "create": OrdinaryQuestionUserAnswerCreateSerializer,
         }[self.action]
 
-    def perform_create(self, serializer: OrdinaryQuestionUserAnswerCreateSerializer):
-        OrdinaryQuestionAnswersHandler.is_not_answered(serializer)
-
-        super(generics.CreateAPIView).perform_create(serializer)
-
 
 class ComparisonQuestionUserAnswerViewSet(
     generics.CreateAPIView,
