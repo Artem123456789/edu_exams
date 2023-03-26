@@ -1,5 +1,11 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 
+from django.utils.translation import gettext as _
+
+from exams.handlers.exams_handlers import (
+    OrdinaryQuestionAnswersHandler,
+    ComparisonQuestionAnswersHandler,
+)
 from exams.models import (
     OrdinaryQuestionUserAnswer,
     ComparisonQuestionUserAnswer,
@@ -16,6 +22,15 @@ class OrdinaryQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
             "answer",
         ]
 
+    def validate(self, attrs):
+        if OrdinaryQuestionAnswersHandler.is_answered(
+            student_exam=attrs["student_exam"],
+            question=attrs["question"],
+        ):
+            raise exceptions.PermissionDenied(_("Answer already sent"))
+
+        return attrs
+
 
 class ComparisonQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
 
@@ -26,3 +41,12 @@ class ComparisonQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
             "option",
             "option_answer",
         ]
+
+    def validate(self, attrs):
+        if ComparisonQuestionAnswersHandler.is_question_option_answered(
+            student_exam=attrs["student_exam"],
+            option=attrs["option"],
+        ):
+            raise exceptions.PermissionDenied(_("Answer already sent"))
+
+        return attrs

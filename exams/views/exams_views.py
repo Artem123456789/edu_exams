@@ -2,7 +2,10 @@ from rest_framework import generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from exams.handlers.exams_handlers import StudentExamsHandler
+from exams.handlers.exams_handlers import (
+    StudentExamsHandler,
+    OrdinaryQuestionAnswersHandler,
+)
 from exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
@@ -52,6 +55,14 @@ class StudentExamsViewSet(
 
         return Response(self.get_serializer_class()(entity).data)
 
+    @action(methods=["post"], detail=True)
+    def finish(self, request, *args, **kwargs):
+        student_exam = self.get_object()
+
+        StudentExamsHandler.finish_student_exam(student_exam=student_exam)
+
+        return Response()
+
 
 class OrdinaryQuestionUserAnswerViewSet(
     generics.CreateAPIView,
@@ -63,6 +74,11 @@ class OrdinaryQuestionUserAnswerViewSet(
         return {
             "create": OrdinaryQuestionUserAnswerCreateSerializer,
         }[self.action]
+
+    def perform_create(self, serializer: OrdinaryQuestionUserAnswerCreateSerializer):
+        OrdinaryQuestionAnswersHandler.is_not_answered(serializer)
+
+        super(generics.CreateAPIView).perform_create(serializer)
 
 
 class ComparisonQuestionUserAnswerViewSet(

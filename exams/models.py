@@ -56,6 +56,11 @@ class Exam(NamedModel):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
 
+    #  Ограничение по времени для сдачи экзамена
+    hours_to_pass = models.SmallIntegerField(null=True)
+    minutes_to_pass = models.SmallIntegerField(null=True)
+    seconds_to_pass = models.SmallIntegerField(null=True)
+
     class Meta:
         verbose_name = _("Экзамен")
         verbose_name_plural = _("Экзамены")
@@ -102,9 +107,14 @@ class StudentExam(TimeStampedModel):
     user_name = models.CharField(max_length=100, default="")
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
 
+    end_datetime = models.DateTimeField(null=True)
+
     class Meta:
         verbose_name = _("Экзамен студента")
         verbose_name_plural = _("Экзамены студента")
+
+    def is_not_finished(self):
+        return self.end_datetime is None
 
     def __str__(self):
         return f"{self.user_name} {self.exam}"
@@ -124,7 +134,7 @@ class OrdinaryQuestionUserAnswer(TimeStampedModel):
         verbose_name_plural = _("Ответы пользователя на вопрос с одним вариантом ответа")
 
     def __str__(self):
-        return f"{str(self.question)} {str(self.answer)}"
+        return f"{self.question} {self.answer}"
 
 
 class ComparisonQuestion(QuestionModel):
@@ -188,7 +198,7 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
         verbose_name_plural = _("Ответы пользователя на вопрос с сопоставлением ответов")
 
     def __str__(self):
-        return f"{str(self.option)} {str(self.option_answer)}"
+        return f"{self.option} {self.option_answer}"
 
 
 # File models

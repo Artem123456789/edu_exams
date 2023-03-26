@@ -3,7 +3,12 @@ from exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
     ComparisonQuestionUserAnswer,
+    OrdinaryQuestion,
+    ComparisonQuestionOptionAnswer,
+    ComparisonQuestionOption,
 )
+
+from datetime import datetime
 
 
 class StudentExamsHandler:
@@ -33,3 +38,35 @@ class StudentExamsHandler:
         points += self.__get_student_exam_comparison_questions_points(student_exam=student_exam)
 
         return StudentExamResultsOutputEntity(points=points)
+
+    @staticmethod
+    def finish_student_exam(student_exam: StudentExam) -> None:
+        if student_exam.is_not_finished:
+            student_exam.end_datetime = datetime.now()
+            student_exam.save()
+
+
+class OrdinaryQuestionAnswersHandler:
+
+    @staticmethod
+    def is_answered(
+            student_exam: StudentExam,
+            question: OrdinaryQuestion
+    ):
+        return OrdinaryQuestionUserAnswer.objects.filter(
+            student_exam=student_exam,
+            question=question,
+        ).count() > 0
+
+
+class ComparisonQuestionAnswersHandler:
+
+    @staticmethod
+    def is_question_option_answered(
+            student_exam: StudentExam,
+            option: ComparisonQuestionOption,
+    ):
+        return ComparisonQuestionOptionAnswer.objects.filter(
+            student_exam=student_exam,
+            option=option,
+        ).count() > 0
