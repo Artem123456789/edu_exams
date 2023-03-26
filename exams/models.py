@@ -1,4 +1,6 @@
 import uuid
+from datetime import timedelta
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from django_extensions.db.models import TimeStampedModel
@@ -113,7 +115,14 @@ class StudentExam(TimeStampedModel):
         verbose_name = _("Экзамен студента")
         verbose_name_plural = _("Экзамены студента")
 
-    def is_not_finished(self):
+    def get_deadline_datetime(self):
+        return (self.created +
+                timedelta(minutes=self.exam.minutes_to_pass)
+                + timedelta(hours=self.exam.hours_to_pass)
+                + timedelta(seconds=self.exam.seconds_to_pass)
+                )
+
+    def is_not_finished(self) -> bool:
         return self.end_datetime is None
 
     def __str__(self):
