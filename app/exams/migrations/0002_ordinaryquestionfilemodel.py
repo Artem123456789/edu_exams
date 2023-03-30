@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import exams.contants
-import exams.utils.file_upload
+import app.exams.contants
+import app.exams.utils.file_upload
 import uuid
 
 
@@ -18,8 +18,8 @@ class Migration(migrations.Migration):
             name='OrdinaryQuestionFileModel',
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=exams.contants.FileType['TYPE_IMAGE'])),
-                ('file', models.FileField(upload_to=exams.utils.file_upload.file_ordinary_question_upload)),
+                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=app.exams.contants.FileType['TYPE_IMAGE'])),
+                ('file', models.FileField(upload_to=app.exams.utils.file_upload.file_ordinary_question_upload)),
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='exams.ordinaryquestion')),
             ],
             options={

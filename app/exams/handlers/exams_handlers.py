@@ -1,10 +1,9 @@
-from exams.entities.exams_entites import StudentExamResultsOutputEntity
-from exams.models import (
+from app.exams.entities.exams_entites import StudentExamResultsOutputEntity
+from app.exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
     ComparisonQuestionUserAnswer,
     OrdinaryQuestion,
-    ComparisonQuestionOptionAnswer,
     ComparisonQuestionOption,
 )
 

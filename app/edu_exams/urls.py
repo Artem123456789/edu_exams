@@ -25,8 +25,8 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path(settings.URL_PREFFIX+"admin/", admin.site.urls),
-    path(settings.URL_PREFFIX + "auth/", include("_auth.urls", namespace="auth")),
+    path(settings.URL_PREFFIX + "auth/", include("app._auth.urls", namespace="auth")),
     path(settings.URL_PREFFIX + "token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path(settings.URL_PREFFIX + "token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path(settings.URL_PREFFIX+"exams/", include("exams.urls", namespace="exams")),
+    path(settings.URL_PREFFIX +"exams/", include("app.exams.urls", namespace="exams")),
 ] + static(settings.URL_PREFFIX+settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from exams.models import (
+from app.exams.models import (
     OrdinaryQuestionAnswer,
     OrdinaryQuestion,
     ComparisonQuestionOption,
@@ -13,7 +13,7 @@ from exams.models import (
     ComparisonQuestionOptionAnswerFile,
 )
 
-from exams.serializers.files_serialziers import (
+from app.exams.serializers.files_serialziers import (
     OrdinaryQuestionFileModelSerializer,
     ComparisonQuestionFileModelSerializer,
     OrdinaryQuestionAnswerFileModelSerializer,

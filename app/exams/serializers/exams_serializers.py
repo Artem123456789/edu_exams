@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
-from exams.models import (
+from app.exams.models import (
     StudentExam,
     Exam,
     OrdinaryQuestion,
     ComparisonQuestion,
 )
-from exams.serializers.questions_serializers import (
+from app.exams.serializers.questions_serializers import (
     OrdinaryQuestionSerializer,
     ComparisonQuestionSerializer,
 )
-from libs.serialziers import BaseSerializer
+from app.libs.serialziers import BaseSerializer
 
 
 class StudentExamCreateSerializer(serializers.ModelSerializer):

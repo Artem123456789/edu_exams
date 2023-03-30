@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from _auth.entities.auth_entities import RegisterInputEntity
+from app._auth.entities.auth_entities import RegisterInputEntity
 
 User = get_user_model()
 

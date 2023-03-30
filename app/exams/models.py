@@ -9,15 +9,15 @@ from django.contrib.auth import get_user_model
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext as _
 
-from exams.contants import FileType
-from exams.utils.file_upload import (
+from app.exams.contants import FileType
+from app.exams.utils.file_upload import (
     file_ordinary_question_upload,
     file_comparison_question_upload,
     file_ordinary_answer_upload,
     file_comparison_option_upload,
     file_comparison_option_answer_upload,
 )
-from libs.base_models import (
+from app.libs.base_models import (
     NamedModel,
     QuestionModel,
 )

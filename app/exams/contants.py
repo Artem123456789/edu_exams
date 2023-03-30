@@ -1,4 +1,4 @@
-from libs.base_enum import BaseEnum
+from app.libs.base_enum import BaseEnum
 
 
 class FileType(BaseEnum):

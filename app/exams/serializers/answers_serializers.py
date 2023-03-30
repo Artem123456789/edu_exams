@@ -6,11 +6,11 @@ from datetime import datetime
 
 from django.utils.translation import gettext as _
 
-from exams.handlers.exams_handlers import (
+from app.exams.handlers.exams_handlers import (
     OrdinaryQuestionAnswersHandler,
     ComparisonQuestionAnswersHandler,
 )
-from exams.models import (
+from app.exams.models import (
     OrdinaryQuestionUserAnswer,
     ComparisonQuestionUserAnswer, StudentExam,
 )

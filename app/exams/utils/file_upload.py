@@ -1,4 +1,4 @@
-from libs.randomize import get_random_string
+from app.libs.randomize import get_random_string
 
 
 def file_ordinary_question_upload(instance, filename):

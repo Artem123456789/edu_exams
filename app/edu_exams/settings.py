@@ -55,8 +55,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "_auth",
-    "exams",
+    "app._auth",
+    "app.exams",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -73,7 +73,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'edu_exams.urls'
+ROOT_URLCONF = 'app.edu_exams.urls'
 
 TEMPLATES = [
     {
@@ -91,7 +91,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'edu_exams.wsgi.application'
+WSGI_APPLICATION = 'app.edu_exams.wsgi.application'
 
 
 # Database
@@ -163,7 +163,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = '/static/'
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "../../media")
 MEDIA_URL = "/media/"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

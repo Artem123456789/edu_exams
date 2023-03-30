@@ -2,22 +2,21 @@ from rest_framework import generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from exams.handlers.exams_handlers import (
+from app.exams.handlers.exams_handlers import (
     StudentExamsHandler,
-    OrdinaryQuestionAnswersHandler,
 )
-from exams.models import (
+from app.exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
     Exam, ComparisonQuestionUserAnswer,
 )
 from rest_framework.viewsets import GenericViewSet
 
-from exams.serializers.answers_serializers import (
+from app.exams.serializers.answers_serializers import (
     OrdinaryQuestionUserAnswerCreateSerializer,
     ComparisonQuestionUserAnswerCreateSerializer,
 )
-from exams.serializers.exams_serializers import (
+from app.exams.serializers.exams_serializers import (
     StudentExamCreateSerializer,
     ExamRetrieveSerializer,
     StudentExamResultsOutputSerializer,

@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from exams.views import exams_views
+from app.exams.views import exams_views
 
 app_name = "exams"
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from exams.models import (
+from app.exams.models import (
     OrdinaryQuestionFile,
     ComparisonQuestionFile,
     OrdinaryQuestionAnswerFile,

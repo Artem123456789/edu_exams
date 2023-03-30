@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from libs.serialziers import BaseSerializer
-from _auth.entities.auth_entities import RegisterInputEntity
+from app.libs.serialziers import BaseSerializer
+from app._auth.entities.auth_entities import RegisterInputEntity
 
 
 class RegisterInputSerializer(BaseSerializer):

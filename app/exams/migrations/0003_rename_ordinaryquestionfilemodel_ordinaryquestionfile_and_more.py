@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import exams.contants
-import exams.utils.file_upload
+import app.exams.contants
+import app.exams.utils.file_upload
 import uuid
 
 
@@ -22,8 +22,8 @@ class Migration(migrations.Migration):
             name='OrdinaryQuestionAnswerFile',
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=exams.contants.FileType['TYPE_IMAGE'])),
-                ('file', models.FileField(upload_to=exams.utils.file_upload.file_ordinary_answer_upload)),
+                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=app.exams.contants.FileType['TYPE_IMAGE'])),
+                ('file', models.FileField(upload_to=app.exams.utils.file_upload.file_ordinary_answer_upload)),
                 ('answer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='exams.ordinaryquestionanswer')),
             ],
             options={
@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
             name='ComparisonQuestionOptionFile',
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=exams.contants.FileType['TYPE_IMAGE'])),
-                ('file', models.FileField(upload_to=exams.utils.file_upload.file_comparison_option_upload)),
+                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=app.exams.contants.FileType['TYPE_IMAGE'])),
+                ('file', models.FileField(upload_to=app.exams.utils.file_upload.file_comparison_option_upload)),
                 ('option', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='exams.comparisonquestionoption')),
             ],
             options={
@@ -48,8 +48,8 @@ class Migration(migrations.Migration):
             name='ComparisonQuestionOptionAnswerFile',
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=exams.contants.FileType['TYPE_IMAGE'])),
-                ('file', models.FileField(upload_to=exams.utils.file_upload.file_comparison_option_answer_upload)),
+                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=app.exams.contants.FileType['TYPE_IMAGE'])),
+                ('file', models.FileField(upload_to=app.exams.utils.file_upload.file_comparison_option_answer_upload)),
                 ('option_answer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='exams.comparisonquestionoptionanswer')),
             ],
             options={
@@ -61,8 +61,8 @@ class Migration(migrations.Migration):
             name='ComparisonQuestionFile',
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=exams.contants.FileType['TYPE_IMAGE'])),
-                ('file', models.FileField(upload_to=exams.utils.file_upload.file_comparison_question_upload)),
+                ('type', models.PositiveSmallIntegerField(choices=[(1, 'TYPE_IMAGE')], default=app.exams.contants.FileType['TYPE_IMAGE'])),
+                ('file', models.FileField(upload_to=app.exams.utils.file_upload.file_comparison_question_upload)),
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='files', to='exams.comparisonquestion')),
             ],
             options={
