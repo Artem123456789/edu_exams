@@ -1,20 +1,9 @@
-FROM python:3.8-alpine
+FROM python:3.8-slim-buster
 
-# set work directory
+COPY requirements.txt /tmp
+RUN pip3 install --upgrade pip && pip3 install -r /tmp/requirements.txt && rm /tmp/requirements.txt
+
 WORKDIR /usr/src/app
+COPY . .
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
-
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
-
-# copy project
-COPY ./app .
+CMD ["gunicorn", "edu_exams.wsgi:application", "--bind", "0.0.0.0:8000"]

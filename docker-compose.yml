@@ -1,21 +1,6 @@
 version: "3.8"
 
 services:
-  web:
-    build: .
-    command: gunicorn edu_exams.wsgi:application --bind 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-    depends_on:
-      - edu_exams_db
-    environment:
-      - SECRET_KEY=0z&9$lv@m%m7h^7wsa8x_34^(tvs=0vkcagul*j5c7ex86k
-      - DATABASE_URL=postgres://edu_exams:edu_exams@edu_exams_db:5441/edu_exams
-      - JWTPUBKEY=23
-      - JWTPRIVKEY=23
-      - JWT_ACCESS_LIFETIME=525600
-      - JWT_REFRESH_LIFETIME=525600
-
   edu_exams_db:
     image: postgres
     volumes:
