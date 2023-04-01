@@ -23,10 +23,8 @@ services:
       - edu_exams_volume:/var/lib/postgresql/data/
     ports:
       - "5441:5432"
-    environment:
-      - POSTGRES_DB=edu_exams
-      - POSTGRES_USER=edu_exams
-      - POSTGRES_PASSWORD=edu_exams
+    env_file:
+      - .env
 
 volumes:
   edu_exams_volume:
