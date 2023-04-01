@@ -47,7 +47,7 @@ then
 	GUNICORN_TIMEOUT=60
 fi
 
-if [ "$DJANGO_SETTINGS_MODULE" = "config.settings.production" ];
+if [ "$DJANGO_SETTINGS_MODULE" = "config.settings.settings" ];
 then
     gunicorn config.wsgi:application \
         --workers $GUNICORN_WORKERS \

@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./docker/app/Dockerfile
     container_name: edu_exams
-    command: /scripts/run_django
+    command: /scripts/run_django.sh
     env_file:
       - .env
     volumes:
