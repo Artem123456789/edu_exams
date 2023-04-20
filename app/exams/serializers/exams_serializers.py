@@ -48,4 +48,7 @@ class ExamRetrieveSerializer(serializers.ModelSerializer):
             "name",
             "ordinary_questions",
             "comparison_questions",
+            "hours_to_pass",
+            "minutes_to_pass",
+            "seconds_to_pass",
         ]
