@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  edu_exams_db:
+    image: postgres
+    volumes:
+      - edu_exams_volume:/var/lib/postgresql/data/
+    ports:
+      - "5441:5432"
+    env_file:
+      - .env
+
+volumes:
+  edu_exams_volume:
