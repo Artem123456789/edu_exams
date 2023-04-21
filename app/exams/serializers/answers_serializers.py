@@ -12,7 +12,9 @@ from app.exams.handlers.exams_handlers import (
 )
 from app.exams.models import (
     OrdinaryQuestionUserAnswer,
-    ComparisonQuestionUserAnswer, StudentExam,
+    ComparisonQuestionUserAnswer,
+    StudentExam,
+    OriginalQuestionUserAnswer,
 )
 
 local_tz = pytz.timezone(settings.TIME_ZONE)
@@ -68,6 +70,35 @@ class ComparisonQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
             if ComparisonQuestionAnswersHandler.is_question_option_answered(
                 student_exam=student_exam,
                 option=attrs["option"],
+            ):
+                raise exceptions.PermissionDenied(_("Answer already sent"))
+        else:
+            raise exceptions.PermissionDenied(_("Exam is finished"))
+
+        return attrs
+
+
+class OriginalQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OriginalQuestionUserAnswer
+        fields = [
+            "student_exam",
+            "question",
+            "text",
+        ]
+
+    def validate(self, attrs):
+        student_exam: StudentExam = attrs["student_exam"]
+
+        if student_exam.is_not_finished():
+
+            if datetime.now().astimezone(tz=local_tz) > student_exam.get_deadline_datetime().astimezone(tz=local_tz):
+                raise exceptions.PermissionDenied(_("Time is up"))
+
+            if OrdinaryQuestionAnswersHandler.is_answered(
+                student_exam=student_exam,
+                question=attrs["question"],
             ):
                 raise exceptions.PermissionDenied(_("Answer already sent"))
         else:

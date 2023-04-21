@@ -8,13 +8,16 @@ from app.exams.handlers.exams_handlers import (
 from app.exams.models import (
     StudentExam,
     OrdinaryQuestionUserAnswer,
-    Exam, ComparisonQuestionUserAnswer,
+    Exam,
+    ComparisonQuestionUserAnswer,
+    OriginalQuestionUserAnswer,
 )
 from rest_framework.viewsets import GenericViewSet
 
 from app.exams.serializers.answers_serializers import (
     OrdinaryQuestionUserAnswerCreateSerializer,
     ComparisonQuestionUserAnswerCreateSerializer,
+    OriginalQuestionUserAnswerCreateSerializer,
 )
 from app.exams.serializers.exams_serializers import (
     StudentExamCreateSerializer,
@@ -84,4 +87,16 @@ class ComparisonQuestionUserAnswerViewSet(
     def get_serializer_class(self):
         return {
             "create": ComparisonQuestionUserAnswerCreateSerializer,
+        }[self.action]
+
+
+class OriginalQuestionUserAnswerViewSet(
+    generics.CreateAPIView,
+    GenericViewSet,
+):
+    queryset = OriginalQuestionUserAnswer.objects.all()
+
+    def get_serializer_class(self):
+        return {
+            "create": OriginalQuestionUserAnswerCreateSerializer,
         }[self.action]

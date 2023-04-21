@@ -11,6 +11,7 @@ from app.exams.models import (
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
+    OriginalQuestionFile,
 )
 
 from app.exams.serializers.files_serialziers import (
@@ -19,6 +20,7 @@ from app.exams.serializers.files_serialziers import (
     OrdinaryQuestionAnswerFileModelSerializer,
     ComparisonQuestionOptionFileModelSerializer,
     ComparisonQuestionOptionAnswerFileModelSerializer,
+    OriginalQuestionFileModelSerializer,
 )
 
 """
@@ -127,5 +129,27 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
             "description",
             "options",
             "option_answers",
+            "files",
+        ]
+
+
+"""
+    Original question
+"""
+
+
+class OriginalQuestionSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    def get_files(self, question: OrdinaryQuestion):
+        files = OriginalQuestionFile.objects.filter(question=question)
+        return OriginalQuestionFileModelSerializer(files, many=True).data
+
+    class Meta:
+        model = OrdinaryQuestion
+        fields = [
+            "uuid",
+            "header",
+            "description",
             "files",
         ]

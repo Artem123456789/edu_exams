@@ -6,54 +6,48 @@ from app.exams.models import (
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
+    OriginalQuestionFile,
 )
+
+
+class BaseFileMeta:
+    fields = [
+        "type",
+        "file",
+    ]
 
 
 class OrdinaryQuestionFileModelSerializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(BaseFileMeta):
         model = OrdinaryQuestionFile
-        fields = [
-            "type",
-            "file",
-        ]
 
 
 class ComparisonQuestionFileModelSerializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(BaseFileMeta):
         model = ComparisonQuestionFile
-        fields = [
-            "type",
-            "file",
-        ]
 
 
 class OrdinaryQuestionAnswerFileModelSerializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(BaseFileMeta):
         model = OrdinaryQuestionAnswerFile
-        fields = [
-            "type",
-            "file",
-        ]
 
 
 class ComparisonQuestionOptionFileModelSerializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(BaseFileMeta):
         model = ComparisonQuestionOptionFile
-        fields = [
-            "type",
-            "file",
-        ]
 
 
 class ComparisonQuestionOptionAnswerFileModelSerializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta(BaseFileMeta):
         model = ComparisonQuestionOptionAnswerFile
-        fields = [
-            "type",
-            "file",
-        ]
+
+
+class OriginalQuestionFileModelSerializer(serializers.ModelSerializer):
+
+    class Meta(BaseFileMeta):
+        model = OriginalQuestionFile
