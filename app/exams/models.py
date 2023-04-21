@@ -245,7 +245,7 @@ class OriginalQuestionAnswer(models.Model):
 
 class OriginalQuestionUserAnswer(TimeStampedModel):
     """
-        Ответ пользователя на вопрос с одним вариантом ответа
+        Ответ пользователя на вопрос c ответом пользователя
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
@@ -253,8 +253,8 @@ class OriginalQuestionUserAnswer(TimeStampedModel):
     text = models.TextField()
 
     class Meta:
-        verbose_name = _("Ответ пользователя на вопрос с одним вариантом ответа")
-        verbose_name_plural = _("Ответы пользователя на вопрос с одним вариантом ответа")
+        verbose_name = _("Ответ пользователя на вопрос c ответом пользователя")
+        verbose_name_plural = _("Ответы пользователей на вопросы c ответами пользователей")
 
     def __str__(self):
         return f"{self.question} {self.text[:20]}"
