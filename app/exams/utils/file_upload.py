@@ -13,6 +13,12 @@ def file_comparison_question_upload(instance, filename):
     return f"questions/comparison_question_images/{instance.question.uuid}/{y}.{extension}"
 
 
+def file_original_question_upload(instance, filename):
+    y = get_random_string(25)
+    extension = filename.split(".")[-1]
+    return f"questions/original_question_images/{instance.question.uuid}/{y}.{extension}"
+
+
 def file_ordinary_answer_upload(instance, filename):
     y = get_random_string(25)
     extension = filename.split(".")[-1]

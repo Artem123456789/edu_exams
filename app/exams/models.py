@@ -16,6 +16,7 @@ from app.exams.utils.file_upload import (
     file_ordinary_answer_upload,
     file_comparison_option_upload,
     file_comparison_option_answer_upload,
+    file_original_question_upload,
 )
 from app.libs.base_models import (
     NamedModel,
@@ -213,6 +214,52 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
         return f"{self.option} {self.option_answer}"
 
 
+class OriginalQuestion(QuestionModel):
+    """
+        Вопрос с ответом пользователя
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+    right_answer_points = models.SmallIntegerField(null=True)
+
+    class Meta:
+        verbose_name = _("Вопрос с ответом пользователя")
+        verbose_name_plural = _("Вопроcы с ответами пользователей")
+
+
+class OriginalQuestionAnswer(models.Model):
+    """
+        Ответ на вопрос с ответом пользователя
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True)
+    text = models.TextField()
+
+    class Meta:
+        verbose_name = _("Ответ на вопрос с ответом пользователя")
+        verbose_name_plural = _("Ответы на вопрос с ответами пользователей")
+
+    def __str__(self):
+        return self.text[:20]
+
+
+class OriginalQuestionUserAnswer(TimeStampedModel):
+    """
+        Ответ пользователя на вопрос с одним вариантом ответа
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True)
+    text = models.TextField()
+
+    class Meta:
+        verbose_name = _("Ответ пользователя на вопрос с одним вариантом ответа")
+        verbose_name_plural = _("Ответы пользователя на вопрос с одним вариантом ответа")
+
+    def __str__(self):
+        return f"{self.question} {self.text[:20]}"
+
+
 # File models
 
 class OrdinaryQuestionFile(models.Model):
@@ -245,6 +292,22 @@ class ComparisonQuestionFile(models.Model):
     class Meta:
         verbose_name = _("Файл вопроса с сопоставлением")
         verbose_name_plural = _("Файлы вопросов с сопоставлением")
+
+
+class OriginalQuestionFile(models.Model):
+    """
+        Файлы оригинальных вопросов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    question = models.ForeignKey(
+        OriginalQuestion, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_ordinary_question_upload)
+
+    class Meta:
+        verbose_name = _("Файл оригинального вопроса")
+        verbose_name_plural = _("Файлы оригинальных вопросов")
 
 
 class OrdinaryQuestionAnswerFile(models.Model):
