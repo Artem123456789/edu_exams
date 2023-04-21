@@ -20,6 +20,10 @@ router.register(
     exams_views.ComparisonQuestionUserAnswerViewSet,
     basename="comparison_question_user_answers"
 )
-
+router.register(
+    "original_question_user_answers",
+    exams_views.OriginalQuestionUserAnswerViewSet,
+    basename="original_question_user_answers"
+)
 
 urlpatterns = router.get_urls()

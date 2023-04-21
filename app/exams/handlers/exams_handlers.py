@@ -5,6 +5,9 @@ from app.exams.models import (
     ComparisonQuestionUserAnswer,
     OrdinaryQuestion,
     ComparisonQuestionOption,
+    OriginalQuestion,
+    OriginalQuestionAnswer,
+    OriginalQuestionUserAnswer,
 )
 
 from datetime import datetime
@@ -32,9 +35,21 @@ class StudentExamsHandler:
 
         return points
 
+    def __get_student_exam_original_questions_points(self, student_exam: StudentExam) -> int:
+        original_questions_answers = OriginalQuestionUserAnswer.objects.filter(student_exam=student_exam)
+        points = 0
+
+        for user_answer in original_questions_answers:
+            question_answer = OriginalQuestionAnswer.objects.get(question=user_answer.question)
+            if user_answer.text == question_answer.text:
+                points += user_answer.question.right_answer_points
+
+        return points
+
     def get_student_exam_results(self, student_exam: StudentExam) -> StudentExamResultsOutputEntity:
         points = self.__get_student_exam_ordinary_questions_points(student_exam=student_exam)
         points += self.__get_student_exam_comparison_questions_points(student_exam=student_exam)
+        points += self.__get_student_exam_original_questions_points(student_exam=student_exam)
 
         return StudentExamResultsOutputEntity(points=points)
 
@@ -68,4 +83,17 @@ class ComparisonQuestionAnswersHandler:
         return ComparisonQuestionUserAnswer.objects.filter(
             student_exam=student_exam,
             option=option,
+        ).count() > 0
+
+
+class OriginalQuestionAnswersHandler:
+
+    @staticmethod
+    def is_answered(
+            student_exam: StudentExam,
+            question: OriginalQuestion,
+    ):
+        return OriginalQuestionUserAnswer.objects.filter(
+            student_exam=student_exam,
+            question=question,
         ).count() > 0

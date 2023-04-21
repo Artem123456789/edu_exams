@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from app.exams.handlers.exams_handlers import (
     OrdinaryQuestionAnswersHandler,
     ComparisonQuestionAnswersHandler,
+    OriginalQuestionAnswersHandler,
 )
 from app.exams.models import (
     OrdinaryQuestionUserAnswer,
@@ -96,7 +97,7 @@ class OriginalQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
             if datetime.now().astimezone(tz=local_tz) > student_exam.get_deadline_datetime().astimezone(tz=local_tz):
                 raise exceptions.PermissionDenied(_("Time is up"))
 
-            if OrdinaryQuestionAnswersHandler.is_answered(
+            if OriginalQuestionAnswersHandler.is_answered(
                 student_exam=student_exam,
                 question=attrs["question"],
             ):
