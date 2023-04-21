@@ -296,7 +296,7 @@ class ComparisonQuestionFile(models.Model):
 
 class OriginalQuestionFile(models.Model):
     """
-        Файлы оригинальных вопросов
+        Файлы вопросов с ответами пользователей
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
@@ -306,8 +306,8 @@ class OriginalQuestionFile(models.Model):
     file = models.FileField(upload_to=file_ordinary_question_upload)
 
     class Meta:
-        verbose_name = _("Файл оригинального вопроса")
-        verbose_name_plural = _("Файлы оригинальных вопросов")
+        verbose_name = _("Файлы вопросов с ответами пользователей")
+        verbose_name_plural = _("Файлы вопросов с ответами пользователей")
 
 
 class OrdinaryQuestionAnswerFile(models.Model):
