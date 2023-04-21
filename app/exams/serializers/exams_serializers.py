@@ -60,3 +60,23 @@ class ExamRetrieveSerializer(serializers.ModelSerializer):
             "minutes_to_pass",
             "seconds_to_pass",
         ]
+
+
+class ExamListSerializer(serializers.ModelSerializer):
+    subject = serializers.SerializerMethodField()
+    school = serializers.SerializerMethodField()
+
+    def get_subject(self, exam: Exam):
+        return exam.subject.name
+
+    def get_school(self, exam: Exam):
+        return exam.subject.school.name
+
+    class Meta:
+        model = Exam
+        fields = [
+            "uuid",
+            "name",
+            "subject",
+            "school",
+        ]

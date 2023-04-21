@@ -23,17 +23,20 @@ from app.exams.serializers.exams_serializers import (
     StudentExamCreateSerializer,
     ExamRetrieveSerializer,
     StudentExamResultsOutputSerializer,
+    ExamListSerializer,
 )
 
 
 class ExamViewSet(
     generics.RetrieveAPIView,
+    generics.ListAPIView,
     GenericViewSet,
 ):
     queryset = Exam.objects.all()
 
     def get_serializer_class(self):
         return {
+            "list": ExamListSerializer,
             "retrieve": ExamRetrieveSerializer,
         }[self.action]
 
