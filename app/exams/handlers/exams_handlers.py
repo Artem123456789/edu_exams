@@ -48,10 +48,21 @@ class StudentExamsHandler:
 
         return points
 
+    def __get_student_exam_original_between_questions_points(self, student_exam: StudentExam) -> int:
+        original_between_questions_answers = OriginalQuestionBetweenUserAnswer.objects.filter(student_exam=student_exam)
+        points = 0
+
+        for user_answer in original_between_questions_answers:
+            if user_answer.text == user_answer.item.text_answer:
+                points += user_answer.item.right_answer_points
+
+        return points
+
     def get_student_exam_results(self, student_exam: StudentExam) -> StudentExamResultsOutputEntity:
         points = self.__get_student_exam_ordinary_questions_points(student_exam=student_exam)
         points += self.__get_student_exam_comparison_questions_points(student_exam=student_exam)
         points += self.__get_student_exam_original_questions_points(student_exam=student_exam)
+        points += self.__get_student_exam_original_between_questions_points(student_exam=student_exam)
 
         return StudentExamResultsOutputEntity(points=points)
 
