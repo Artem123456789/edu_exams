@@ -284,6 +284,7 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
     text_answer = models.TextField(null=True, blank=True)
 
     right_answer_points = models.SmallIntegerField(null=True)
+    order_index = models.SmallIntegerField(null=True)
 
     class Meta:
         verbose_name = _("Элемент вопроса со вписыванием между текстом")
