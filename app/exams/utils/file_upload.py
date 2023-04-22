@@ -41,3 +41,15 @@ def file_original_between_question_upload(instance, filename):
     y = get_random_string(25)
     extension = filename.split(".")[-1]
     return f"answers/original_between_question_files/{instance.question.uuid}/{y}.{extension}"
+
+
+def file_multiple_question_upload(instance, filename):
+    y = get_random_string(25)
+    extension = filename.split(".")[-1]
+    return f"answers/multiple_question_files/{instance.question.uuid}/{y}.{extension}"
+
+
+def file_multiple_question_answers_upload(instance, filename):
+    y = get_random_string(25)
+    extension = filename.split(".")[-1]
+    return f"answers/multiple_question_answers_files/{instance.answer.uuid}/{y}.{extension}"

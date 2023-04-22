@@ -18,6 +18,8 @@ from app.exams.utils.file_upload import (
     file_comparison_option_answer_upload,
     file_original_question_upload,
     file_original_between_question_upload,
+    file_multiple_question_upload,
+    file_multiple_question_answers_upload,
 )
 from app.libs.base_models import (
     NamedModel,
@@ -312,6 +314,55 @@ class OriginalQuestionBetweenUserAnswer(models.Model):
         return self.text[:20]
 
 
+class MultipleQuestion(QuestionModel):
+    """
+        Вопрос с множеством вариантов ответов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = _("Вопрос с множеством вариантов ответов")
+        verbose_name_plural = _("Вопросы с множеством вариантов ответов")
+
+
+class MultipleQuestionAnswer(models.Model):
+    """
+        Ответ на вопрос с множествами вариантами ответов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    question = models.ForeignKey(MultipleQuestion, on_delete=models.SET_NULL, null=True)
+    text = models.TextField()
+
+    right_answer_points = models.SmallIntegerField(null=True)
+    is_correct = models.BooleanField()
+
+    class Meta:
+        verbose_name = _("Ответ на вопрос с множествами вариантами ответов")
+        verbose_name_plural = _("Ответ на вопросы с множествами вариантами ответов")
+
+    def __str__(self):
+        return self.text[:20]
+
+
+class MultipleQuestionUserAnswer(TimeStampedModel):
+    """
+        Ответ пользователя на вопрос с множествами вариантами ответов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
+
+    question = models.ForeignKey(MultipleQuestion, on_delete=models.SET_NULL, null=True)
+    answer = models.ForeignKey(MultipleQuestionAnswer, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = _("Ответ пользователя на вопрос с одним вариантом ответа")
+        verbose_name_plural = _("Ответы пользователя на вопрос с одним вариантом ответа")
+
+    def __str__(self):
+        return f"{self.question} {self.answer}"
+
+
 # File models
 
 class OrdinaryQuestionFile(models.Model):
@@ -424,3 +475,35 @@ class OriginalBetweenQuestionFile(models.Model):
     class Meta:
         verbose_name = _("Файл вопроса с вписыванием между текстом")
         verbose_name_plural = _("Файлы вопросов с вписыванием между текстом")
+
+
+class MultipleQuestionFile(models.Model):
+    """
+        Файл вопроса со множеством вариантов ответов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    question = models.ForeignKey(
+        MultipleQuestion, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_multiple_question_upload)
+
+    class Meta:
+        verbose_name = _("Файл вопроса со множеством вариантов ответов")
+        verbose_name_plural = _("Файлы вопросов со множествами вариантов ответов")
+
+
+class MultipleQuestionAnswerFile(models.Model):
+    """
+        Файл ответа на вопрос со множеством вариантов ответов
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    answer = models.ForeignKey(
+        MultipleQuestionAnswer, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_multiple_question_upload)
+
+    class Meta:
+        verbose_name = _("Файл ответа на вопрос со множеством вариантов ответов")
+        verbose_name_plural = _("Файлы ответов на вопросы со множеством вариантов ответов")
