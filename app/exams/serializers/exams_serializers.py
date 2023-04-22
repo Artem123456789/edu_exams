@@ -6,11 +6,13 @@ from app.exams.models import (
     OrdinaryQuestion,
     ComparisonQuestion,
     OriginalQuestion,
+    OriginalBetweenQuestion,
 )
 from app.exams.serializers.questions_serializers import (
     OrdinaryQuestionSerializer,
     ComparisonQuestionSerializer,
     OriginalQuestionSerializer,
+    OriginalBetweenQuestionSerializer,
 )
 from app.libs.serialziers import BaseSerializer
 
@@ -35,6 +37,7 @@ class ExamRetrieveSerializer(serializers.ModelSerializer):
     ordinary_questions = serializers.SerializerMethodField()
     comparison_questions = serializers.SerializerMethodField()
     original_questions = serializers.SerializerMethodField()
+    original_between_questions = serializers.SerializerMethodField()
 
     def get_ordinary_questions(self, exam: Exam):
         ordinary_questions = OrdinaryQuestion.objects.filter(exam=exam)
@@ -48,6 +51,10 @@ class ExamRetrieveSerializer(serializers.ModelSerializer):
         original_questions = OriginalQuestion.objects.filter(exam=exam)
         return OriginalQuestionSerializer(original_questions, many=True).data
 
+    def get_original_between_questions(self, exam: Exam):
+        original_between_questions = OriginalBetweenQuestion.objects.filter(exam=exam)
+        return OriginalBetweenQuestionSerializer(original_between_questions, many=True).data
+
     class Meta:
         model = Exam
         fields = [
@@ -56,6 +63,7 @@ class ExamRetrieveSerializer(serializers.ModelSerializer):
             "ordinary_questions",
             "comparison_questions",
             "original_questions",
+            "original_between_questions",
             "hours_to_pass",
             "minutes_to_pass",
             "seconds_to_pass",

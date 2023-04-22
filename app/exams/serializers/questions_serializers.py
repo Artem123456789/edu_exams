@@ -12,6 +12,9 @@ from app.exams.models import (
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
     OriginalQuestionFile,
+    OriginalBetweenQuestion,
+    OriginalQuestionBetweenAnswerItem,
+    OriginalBetweenQuestionFile,
 )
 
 from app.exams.serializers.files_serialziers import (
@@ -21,6 +24,7 @@ from app.exams.serializers.files_serialziers import (
     ComparisonQuestionOptionFileModelSerializer,
     ComparisonQuestionOptionAnswerFileModelSerializer,
     OriginalQuestionFileModelSerializer,
+    OriginalBetweenQuestionFileModelSerializer,
 )
 
 """
@@ -152,4 +156,43 @@ class OriginalQuestionSerializer(serializers.ModelSerializer):
             "header",
             "description",
             "files",
+        ]
+
+
+"""
+    Original between question
+"""
+
+
+class OriginalBetweenQuestionItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OriginalQuestionBetweenAnswerItem
+        fields = [
+            "uuid",
+            "text",
+            "order_index",
+        ]
+
+
+class OriginalBetweenQuestionSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+    items = serializers.SerializerMethodField()
+
+    def get_files(self, question: OriginalBetweenQuestion):
+        files = OriginalBetweenQuestionFile.objects.filter(question=question)
+        return OriginalBetweenQuestionFileModelSerializer(files, many=True).data
+
+    def get_items(self, question: OriginalBetweenQuestion):
+        items = OriginalQuestionBetweenAnswerItem.objects.filter(question=question).order_by("order_index")
+        return OriginalBetweenQuestionItemSerializer(items, many=True).data
+
+    class Meta:
+        model = OriginalBetweenQuestion
+        fields = [
+            "uuid",
+            "header",
+            "description",
+            "files",
+            "items",
         ]

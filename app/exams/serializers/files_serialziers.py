@@ -7,6 +7,7 @@ from app.exams.models import (
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
     OriginalQuestionFile,
+    OriginalBetweenQuestionFile,
 )
 
 
@@ -51,3 +52,9 @@ class OriginalQuestionFileModelSerializer(serializers.ModelSerializer):
 
     class Meta(BaseFileMeta):
         model = OriginalQuestionFile
+
+
+class OriginalBetweenQuestionFileModelSerializer(serializers.ModelSerializer):
+
+    class Meta(BaseFileMeta):
+        model = OriginalBetweenQuestionFile
