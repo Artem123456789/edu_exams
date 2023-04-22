@@ -11,6 +11,7 @@ from app.exams.models import (
     OrdinaryQuestionAnswerFile,
     ComparisonQuestionOptionFile,
     ComparisonQuestionOptionAnswerFile,
+    OriginalQuestion,
     OriginalQuestionFile,
     OriginalBetweenQuestion,
     OriginalQuestionBetweenAnswerItem,
@@ -145,12 +146,12 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
 class OriginalQuestionSerializer(serializers.ModelSerializer):
     files = serializers.SerializerMethodField()
 
-    def get_files(self, question: OrdinaryQuestion):
+    def get_files(self, question: OriginalQuestion):
         files = OriginalQuestionFile.objects.filter(question=question)
         return OriginalQuestionFileModelSerializer(files, many=True).data
 
     class Meta:
-        model = OrdinaryQuestion
+        model = OriginalQuestion
         fields = [
             "uuid",
             "header",
