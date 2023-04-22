@@ -279,6 +279,7 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     question = models.ForeignKey(OriginalBetweenQuestion, on_delete=models.SET_NULL, null=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
 
     text = models.TextField()
     text_answer = models.TextField(null=True, blank=True)
