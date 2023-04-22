@@ -16,6 +16,10 @@ from app.exams.models import (
     OriginalBetweenQuestion,
     OriginalQuestionBetweenAnswerItem,
     OriginalBetweenQuestionFile,
+    MultipleQuestion,
+    MultipleQuestionAnswer,
+    MultipleQuestionFile,
+    MultipleQuestionAnswerFile,
 )
 
 from app.exams.serializers.files_serialziers import (
@@ -26,6 +30,8 @@ from app.exams.serializers.files_serialziers import (
     ComparisonQuestionOptionAnswerFileModelSerializer,
     OriginalQuestionFileModelSerializer,
     OriginalBetweenQuestionFileModelSerializer,
+    MultipleQuestionFileModelSerializer,
+    MultipleQuestionAnswerFileModelSerializer,
 )
 
 """
@@ -190,6 +196,50 @@ class OriginalBetweenQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OriginalBetweenQuestion
+        fields = [
+            "uuid",
+            "header",
+            "description",
+            "files",
+            "items",
+        ]
+
+
+"""
+    Multiple question
+"""
+
+
+class MultipleQuestionAnswerSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    def get_files(self, answer: MultipleQuestionAnswer):
+        files = MultipleQuestionAnswerFile.objects.filter(answer=answer)
+        return MultipleQuestionAnswerFileModelSerializer(files, many=True).data
+
+    class Meta:
+        model = MultipleQuestionAnswer
+        fields = [
+            "uuid",
+            "text",
+            "files",
+        ]
+
+
+class MultipleQuestionSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+    items = serializers.SerializerMethodField()
+
+    def get_files(self, question: OriginalBetweenQuestion):
+        files = MultipleQuestionFile.objects.filter(question=question)
+        return MultipleQuestionFileModelSerializer(files, many=True).data
+
+    def get_items(self, question: OriginalBetweenQuestion):
+        items = MultipleQuestionAnswer.objects.filter(question=question)
+        return MultipleQuestionAnswerSerializer(items, many=True).data
+
+    class Meta:
+        model = MultipleQuestion
         fields = [
             "uuid",
             "header",
