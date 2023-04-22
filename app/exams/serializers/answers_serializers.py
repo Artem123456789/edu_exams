@@ -11,6 +11,7 @@ from app.exams.handlers.exams_handlers import (
     ComparisonQuestionAnswersHandler,
     OriginalQuestionAnswersHandler,
     OriginalQuestionBetweenAnswersHandler,
+    MultipleQuestionUserAnswerHandler,
 )
 from app.exams.models import (
     OrdinaryQuestionUserAnswer,
@@ -18,6 +19,7 @@ from app.exams.models import (
     StudentExam,
     OriginalQuestionUserAnswer,
     OriginalQuestionBetweenUserAnswer,
+    MultipleQuestionUserAnswer,
 )
 
 local_tz = pytz.timezone(settings.TIME_ZONE)
@@ -131,6 +133,36 @@ class OriginalQuestionBetweenUserAnswerCreateSerializer(serializers.ModelSeriali
             if OriginalQuestionBetweenAnswersHandler.is_answered(
                 student_exam=student_exam,
                 item=attrs["item"],
+            ):
+                raise exceptions.PermissionDenied(_("Answer already sent"))
+        else:
+            raise exceptions.PermissionDenied(_("Exam is finished"))
+
+        return attrs
+
+
+class MultipleQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MultipleQuestionUserAnswer
+        fields = [
+            "student_exam",
+            "question",
+            "answer",
+        ]
+
+    def validate(self, attrs):
+        student_exam: StudentExam = attrs["student_exam"]
+
+        if student_exam.is_not_finished():
+
+            if datetime.now().astimezone(tz=local_tz) > student_exam.get_deadline_datetime().astimezone(tz=local_tz):
+                raise exceptions.PermissionDenied(_("Time is up"))
+
+            if MultipleQuestionUserAnswerHandler.is_answered(
+                student_exam=student_exam,
+                answer=attrs["answer"],
+                question=attrs["question"],
             ):
                 raise exceptions.PermissionDenied(_("Answer already sent"))
         else:

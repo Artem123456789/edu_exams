@@ -10,6 +10,8 @@ from app.exams.models import (
     OriginalQuestionUserAnswer,
     OriginalQuestionBetweenAnswerItem,
     OriginalQuestionBetweenUserAnswer,
+    MultipleQuestion,
+    MultipleQuestionAnswer,
 )
 
 from datetime import datetime
@@ -122,4 +124,19 @@ class OriginalQuestionBetweenAnswersHandler:
         return OriginalQuestionBetweenUserAnswer.objects.filter(
             student_exam=student_exam,
             item=item,
+        ).count() > 0
+
+
+class MultipleQuestionUserAnswerHandler:
+
+    @staticmethod
+    def is_answered(
+            student_exam: StudentExam,
+            question: MultipleQuestion,
+            answer: MultipleQuestionAnswer,
+    ):
+        return OrdinaryQuestionUserAnswer.objects.filter(
+            student_exam=student_exam,
+            question=question,
+            answer=answer,
         ).count() > 0
