@@ -24,6 +24,11 @@ from .models import (
     OriginalQuestionBetweenAnswerItem,
     OriginalQuestionBetweenUserAnswer,
     OriginalBetweenQuestionFile,
+    MultipleQuestion,
+    MultipleQuestionAnswer,
+    MultipleQuestionUserAnswer,
+    MultipleQuestionFile,
+    MultipleQuestionAnswerFile,
 )
 
 
@@ -238,7 +243,7 @@ class OriginalQuestionAnswerAdmin(admin.ModelAdmin):
 
 
 @admin.register(OriginalQuestionUserAnswer)
-class OrdinaryQuestionUserAnswerAdmin(admin.ModelAdmin):
+class OriginalQuestionUserAnswerAdmin(admin.ModelAdmin):
     list_display = (
         "question",
         "text",
@@ -291,5 +296,59 @@ class OriginalQuestionBetweenUserAnswerAdmin(admin.ModelAdmin):
 class OriginalBetweenQuestionFileAdmin(admin.ModelAdmin):
     list_display = (
         "question",
+        "file",
+    )
+
+
+@admin.register(MultipleQuestion)
+class MultipleQuestionAdmin(admin.ModelAdmin):
+    list_display = (
+        "header",
+    )
+
+    list_filter = (
+        "exam",
+    )
+
+    search_fields = (
+        "header",
+    )
+
+
+@admin.register(MultipleQuestionAnswer)
+class MultipleQuestionAnswerAdmin(admin.ModelAdmin):
+    list_display = (
+        "question",
+    )
+
+    list_filter = (
+        "is_correct",
+    )
+
+    search_fields = (
+        "question",
+    )
+
+
+@admin.register(MultipleQuestionUserAnswer)
+class MultipleQuestionUserAnswerAdmin(admin.ModelAdmin):
+    list_display = (
+        "question",
+        "answer",
+    )
+
+
+@admin.register(MultipleQuestionFile)
+class MultipleQuestionFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "question",
+        "file",
+    )
+
+
+@admin.register(MultipleQuestionAnswerFile)
+class MultipleQuestionAnswerFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "answer",
         "file",
     )
