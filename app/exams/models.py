@@ -293,6 +293,22 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
         return self.text[:20]
 
 
+class OriginalQuestionBetweenUserAnswerItem(models.Model):
+    """
+        Ответ пользователя на элемент вопроса со вписыванием между текстом
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    item = models.ForeignKey(OriginalQuestionBetweenAnswerItem, on_delete=models.SET_NULL, null=True)
+    text = models.TextField()
+
+    class Meta:
+        verbose_name = _("Ответ пользователя на элемент вопроса со вписыванием между текстом")
+        verbose_name_plural = _("Ответы пользователей на элементы вопросов со вписыванием между текстом")
+
+    def __str__(self):
+        return self.text[:20]
+
+
 # File models
 
 class OrdinaryQuestionFile(models.Model):
