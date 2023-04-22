@@ -20,6 +20,10 @@ from .models import (
     OriginalQuestionAnswer,
     OriginalQuestionUserAnswer,
     OriginalQuestionFile,
+    OriginalBetweenQuestion,
+    OriginalQuestionBetweenAnswerItem,
+    OriginalQuestionBetweenUserAnswer,
+    OriginalBetweenQuestionFile,
 )
 
 
@@ -243,6 +247,48 @@ class OrdinaryQuestionUserAnswerAdmin(admin.ModelAdmin):
 
 @admin.register(OriginalQuestionFile)
 class OriginalQuestionFileAdmin(admin.ModelAdmin):
+    list_display = (
+        "question",
+        "file",
+    )
+
+
+@admin.register(OriginalBetweenQuestion)
+class OriginalBetweenQuestionAdmin(admin.ModelAdmin):
+    list_display = (
+        "header",
+    )
+
+    list_filter = (
+        "exam",
+    )
+
+    search_fields = (
+        "header",
+    )
+
+
+@admin.register(OriginalQuestionBetweenAnswerItem)
+class OriginalQuestionBetweenAnswerItemAdmin(admin.ModelAdmin):
+    list_display = (
+        "question",
+    )
+
+    search_fields = (
+        "question",
+    )
+
+
+@admin.register(OriginalQuestionBetweenUserAnswer)
+class OriginalQuestionBetweenUserAnswerAdmin(admin.ModelAdmin):
+    list_display = (
+        "item",
+        "text",
+    )
+
+
+@admin.register(OriginalBetweenQuestionFile)
+class OriginalBetweenQuestionFileAdmin(admin.ModelAdmin):
     list_display = (
         "question",
         "file",
