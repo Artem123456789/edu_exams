@@ -11,6 +11,7 @@ from app.exams.models import (
     Exam,
     ComparisonQuestionUserAnswer,
     OriginalQuestionUserAnswer,
+    OriginalQuestionBetweenUserAnswer,
 )
 from rest_framework.viewsets import GenericViewSet
 
@@ -18,6 +19,7 @@ from app.exams.serializers.answers_serializers import (
     OrdinaryQuestionUserAnswerCreateSerializer,
     ComparisonQuestionUserAnswerCreateSerializer,
     OriginalQuestionUserAnswerCreateSerializer,
+    OriginalQuestionBetweenUserAnswerCreateSerializer,
 )
 from app.exams.serializers.exams_serializers import (
     StudentExamCreateSerializer,
@@ -105,13 +107,13 @@ class OriginalQuestionUserAnswerViewSet(
         }[self.action]
 
 
-class OriginalQuestionUserAnswerViewSet(
+class OriginalQuestionBetweenUserAnswerViewSet(
     generics.CreateAPIView,
     GenericViewSet,
 ):
-    queryset = OriginalQuestionUserAnswer.objects.all()
+    queryset = OriginalQuestionBetweenUserAnswer.objects.all()
 
     def get_serializer_class(self):
         return {
-            "create": OriginalQuestionUserAnswerCreateSerializer,
+            "create": OriginalQuestionBetweenUserAnswerCreateSerializer,
         }[self.action]
