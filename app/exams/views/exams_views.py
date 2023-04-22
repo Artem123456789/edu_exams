@@ -103,3 +103,15 @@ class OriginalQuestionUserAnswerViewSet(
         return {
             "create": OriginalQuestionUserAnswerCreateSerializer,
         }[self.action]
+
+
+class OriginalQuestionUserAnswerViewSet(
+    generics.CreateAPIView,
+    GenericViewSet,
+):
+    queryset = OriginalQuestionUserAnswer.objects.all()
+
+    def get_serializer_class(self):
+        return {
+            "create": OriginalQuestionUserAnswerCreateSerializer,
+        }[self.action]

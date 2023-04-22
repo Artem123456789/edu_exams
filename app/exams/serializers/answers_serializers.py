@@ -16,6 +16,7 @@ from app.exams.models import (
     ComparisonQuestionUserAnswer,
     StudentExam,
     OriginalQuestionUserAnswer,
+    OriginalQuestionBetweenUserAnswer,
 )
 
 local_tz = pytz.timezone(settings.TIME_ZONE)
@@ -106,3 +107,14 @@ class OriginalQuestionUserAnswerCreateSerializer(serializers.ModelSerializer):
             raise exceptions.PermissionDenied(_("Exam is finished"))
 
         return attrs
+
+
+class OriginalQuestionBetweenUserAnswerItemCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OriginalQuestionBetweenUserAnswer
+        fields = [
+            "item",
+            "student_exam",
+            "text",
+        ]

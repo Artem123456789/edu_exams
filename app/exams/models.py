@@ -279,7 +279,6 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     question = models.ForeignKey(OriginalBetweenQuestion, on_delete=models.SET_NULL, null=True)
-    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
 
     text = models.TextField()
     text_answer = models.TextField(null=True, blank=True)
@@ -294,12 +293,14 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
         return self.text[:20]
 
 
-class OriginalQuestionBetweenUserAnswerItem(models.Model):
+class OriginalQuestionBetweenUserAnswer(models.Model):
     """
         Ответ пользователя на элемент вопроса со вписыванием между текстом
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     item = models.ForeignKey(OriginalQuestionBetweenAnswerItem, on_delete=models.SET_NULL, null=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
+
     text = models.TextField()
 
     class Meta:
