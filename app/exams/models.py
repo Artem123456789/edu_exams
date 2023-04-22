@@ -17,6 +17,7 @@ from app.exams.utils.file_upload import (
     file_comparison_option_upload,
     file_comparison_option_answer_upload,
     file_original_question_upload,
+    file_original_between_question_upload,
 )
 from app.libs.base_models import (
     NamedModel,
@@ -260,6 +261,38 @@ class OriginalQuestionUserAnswer(TimeStampedModel):
         return f"{self.question} {self.text[:20]}"
 
 
+class OriginalBetweenQuestion(QuestionModel):
+    """
+        Вопрос с вписыванием между текстом
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = _("Вопрос с вписыванием между текстом")
+        verbose_name_plural = _("Вопросы со вписыванием между текстом")
+
+
+class OriginalQuestionBetweenAnswerItem(models.Model):
+    """
+        Элемент вопроса со вписыванием между текстом
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    question = models.ForeignKey(OriginalBetweenQuestion, on_delete=models.SET_NULL, null=True)
+
+    text = models.TextField()
+    text_answer = models.TextField(null=True, blank=True)
+
+    right_answer_points = models.SmallIntegerField(null=True)
+
+    class Meta:
+        verbose_name = _("Элемент вопроса со вписыванием между текстом")
+        verbose_name_plural = _("Элементы вопросов со вписыванием между текстом")
+
+    def __str__(self):
+        return self.text[:20]
+
+
 # File models
 
 class OrdinaryQuestionFile(models.Model):
@@ -356,3 +389,19 @@ class ComparisonQuestionOptionAnswerFile(models.Model):
     class Meta:
         verbose_name = _("Файл ответа на опцию вопроса с сопоставлением")
         verbose_name_plural = _("Файлы ответов на опции вопросов с сопоставлением")
+
+
+class OriginalBetweenQuestionFile(models.Model):
+    """
+        Файл вопроса с вписыванием между текстом
+    """
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
+    question = models.ForeignKey(
+        OriginalBetweenQuestion, on_delete=models.CASCADE, related_name="files"
+    )
+    file = models.FileField(upload_to=file_original_between_question_upload)
+
+    class Meta:
+        verbose_name = _("Файл вопроса с вписыванием между текстом")
+        verbose_name_plural = _("Файлы вопросов с вписыванием между текстом")

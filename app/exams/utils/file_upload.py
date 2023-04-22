@@ -35,3 +35,9 @@ def file_comparison_option_answer_upload(instance, filename):
     y = get_random_string(25)
     extension = filename.split(".")[-1]
     return f"answers/comparison_option_answer_files/{instance.option_answer.uuid}/{y}.{extension}"
+
+
+def file_original_between_question_upload(instance, filename):
+    y = get_random_string(25)
+    extension = filename.split(".")[-1]
+    return f"answers/original_between_question_files/{instance.question.uuid}/{y}.{extension}"
