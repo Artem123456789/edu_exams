@@ -12,6 +12,7 @@ from app.exams.models import (
     OriginalQuestionBetweenUserAnswer,
     MultipleQuestion,
     MultipleQuestionAnswer,
+    MultipleQuestionUserAnswer,
 )
 
 from datetime import datetime
@@ -56,6 +57,16 @@ class StudentExamsHandler:
 
         for user_answer in original_between_questions_answers:
             if user_answer.text == user_answer.item.text_answer:
+                points += user_answer.item.right_answer_points
+
+        return points
+
+    def __get_student_exam_multiple_questions_points(self, student_exam: StudentExam) -> int:
+        multiple_questions_answers = MultipleQuestionUserAnswer.objects.filter(student_exam=student_exam)
+        points = 0
+
+        for user_answer in multiple_questions_answers:
+            if user_answer.answer == user_answer.question.text_answer:
                 points += user_answer.item.right_answer_points
 
         return points
