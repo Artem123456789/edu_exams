@@ -110,11 +110,11 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
     files = serializers.SerializerMethodField()
 
     def get_options(self, question: ComparisonQuestion):
-        options = ComparisonQuestionOption.objects.filter(question=question)
+        options = ComparisonQuestionOption.objects.filter(question=question).order_by("?")
         return ComparisonQuestionOptionSerializer(options, many=True).data
 
     def get_option_answers(self, question: ComparisonQuestion):
-        option_answers = ComparisonQuestionOptionAnswer.objects.filter(question=question)
+        option_answers = ComparisonQuestionOptionAnswer.objects.filter(question=question).order_by("?")
         return ComparisonQuestionOptionAnswerSerializer(option_answers, many=True).data
 
     def get_files(self, question: ComparisonQuestion):
