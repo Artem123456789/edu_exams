@@ -60,7 +60,8 @@ class StudentExamRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentExam
         fields = [
-            "ordinary_question_answers"
+            "ordinary_question_answers",
+            "original_question_answers",
         ]
 
 
