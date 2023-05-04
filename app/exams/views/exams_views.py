@@ -26,6 +26,7 @@ from app.exams.serializers.exams_serializers import (
     ExamRetrieveSerializer,
     StudentExamResultsOutputSerializer,
     ExamListSerializer,
+    StudentExamRetrieveSerializer,
 )
 
 
@@ -45,6 +46,7 @@ class ExamViewSet(
 
 class StudentExamsViewSet(
     generics.CreateAPIView,
+    generics.RetrieveAPIView,
     GenericViewSet,
 ):
     queryset = StudentExam.objects.all()
@@ -52,6 +54,7 @@ class StudentExamsViewSet(
     def get_serializer_class(self):
         return {
             "create": StudentExamCreateSerializer,
+            "retrieve": StudentExamRetrieveSerializer,
             "get_student_exam_results": StudentExamResultsOutputSerializer,
         }[self.action]
 

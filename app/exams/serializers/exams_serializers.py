@@ -7,6 +7,7 @@ from app.exams.models import (
     ComparisonQuestion,
     OriginalQuestion,
     OriginalBetweenQuestion,
+    OrdinaryQuestionUserAnswer,
 )
 from app.exams.serializers.questions_serializers import (
     OrdinaryQuestionSerializer,
@@ -26,6 +27,27 @@ class StudentExamCreateSerializer(serializers.ModelSerializer):
             "uuid",
             "user_name",
             "exam",
+        ]
+
+
+class OrdinaryQuestionUser(serializers.Serializer):
+    question_header = serializers.CharField(source="question.header")
+    question_description = serializers.CharField(source="question.description")
+    right_answer = serializers.CharField(source="question.right_answer.text")
+    user_answer = serializers.CharField(source="answer.text")
+
+
+class StudentExamRetrieveSerializer(serializers.ModelSerializer):
+    ordinary_question_answers = serializers.SerializerMethodField()
+
+    def get_ordinary_question_answers(self, student_exam: StudentExam):
+        answers = OrdinaryQuestionUserAnswer.objects.filter(student_exam=student_exam)
+        return OrdinaryQuestionUser(answers, many=True).data
+
+    class Meta:
+        model = StudentExam
+        fields = [
+            "ordinary_question_answers"
         ]
 
 

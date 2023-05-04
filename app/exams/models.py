@@ -84,6 +84,10 @@ class OrdinaryQuestion(QuestionModel):
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
     right_answer_points = models.SmallIntegerField(null=True)
 
+    @property
+    def right_answer(self):
+        return OrdinaryQuestionAnswer.objects.filter(question=self, is_correct=True).first()
+
     class Meta:
         verbose_name = _("Вопрос с одним вариантом ответа")
         verbose_name_plural = _("Вопросы с одним вариантом ответа")
