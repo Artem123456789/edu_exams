@@ -227,6 +227,10 @@ class OriginalQuestion(QuestionModel):
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
     right_answer_points = models.SmallIntegerField(null=True)
 
+    @property
+    def right_answer(self):
+        return OriginalQuestionAnswer.objects.filter(question=self).first()
+
     class Meta:
         verbose_name = _("Вопрос с ответом пользователя")
         verbose_name_plural = _("Вопроcы с ответами пользователей")
