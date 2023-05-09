@@ -10,6 +10,7 @@ from app.exams.models import (
     OrdinaryQuestionUserAnswer,
     OriginalQuestionUserAnswer,
     ComparisonQuestionUserAnswer,
+    OriginalQuestionBetweenUserAnswer,
 )
 from app.exams.serializers.questions_serializers import (
     OrdinaryQuestionSerializer,
@@ -61,10 +62,22 @@ class ComparisonQuestionUser(serializers.Serializer):
     user_answer_uuid = serializers.CharField(source="option_answer.uuid")
 
 
+class OriginalBetweenQuestionUser(serializers.Serializer):
+    question_header = serializers.CharField(source="item.question.header")
+    question_description = serializers.CharField(source="item.question.description")
+
+    item_text = serializers.CharField(source="item.text")
+    item_text_answer = serializers.CharField(source="item.text_answer")
+    order_index = serializers.CharField(source="item.order_index")
+
+    user_answer_text = serializers.CharField(source="text")
+
+
 class StudentExamRetrieveSerializer(serializers.ModelSerializer):
     ordinary_question_answers = serializers.SerializerMethodField()
     original_question_answers = serializers.SerializerMethodField()
     comparison_question_answers = serializers.SerializerMethodField()
+    original_between_answers = serializers.SerializerMethodField()
 
     def get_ordinary_question_answers(self, student_exam: StudentExam):
         answers = OrdinaryQuestionUserAnswer.objects.filter(student_exam=student_exam)
@@ -78,12 +91,17 @@ class StudentExamRetrieveSerializer(serializers.ModelSerializer):
         answers = ComparisonQuestionUserAnswer.objects.filter(student_exam=student_exam)
         return ComparisonQuestionUser(answers, many=True).data
 
+    def get_original_between_answers(self, student_exam: StudentExam):
+        answers = OriginalQuestionBetweenUserAnswer.objects.filter(student_exam=student_exam)
+        return OriginalBetweenQuestionUser(answers, many=True).data
+
     class Meta:
         model = StudentExam
         fields = [
             "ordinary_question_answers",
             "original_question_answers",
             "comparison_question_answers",
+            "original_between_answers",
         ]
 
 
