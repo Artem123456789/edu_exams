@@ -34,8 +34,12 @@ class StudentExamCreateSerializer(serializers.ModelSerializer):
 class OrdinaryQuestionUser(serializers.Serializer):
     question_header = serializers.CharField(source="question.header")
     question_description = serializers.CharField(source="question.description")
+
     right_answer = serializers.CharField(source="question.right_answer.text")
+    right_answer_uuid = serializers.CharField(source="question.right_answer.uuid")
+
     user_answer = serializers.CharField(source="answer.text")
+    user_answer_uuid = serializers.CharField(source="answer.uuid")
 
 
 class OriginalQuestionUser(serializers.Serializer):
