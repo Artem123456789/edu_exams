@@ -52,6 +52,7 @@ class OriginalQuestionUser(serializers.Serializer):
 
 
 class ComparisonQuestionUser(serializers.Serializer):
+    question_uuid = serializers.CharField(source="option.question.uuid")
     question_header = serializers.CharField(source="option.question.header")
     question_description = serializers.CharField(source="option.question.description")
 
@@ -63,6 +64,7 @@ class ComparisonQuestionUser(serializers.Serializer):
 
 
 class OriginalBetweenQuestionUser(serializers.Serializer):
+    question_uuid = serializers.CharField(source="item.question.uuid")
     question_header = serializers.CharField(source="item.question.header")
     question_description = serializers.CharField(source="item.question.description")
 
