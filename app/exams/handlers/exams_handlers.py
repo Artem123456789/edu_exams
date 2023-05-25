@@ -10,6 +10,9 @@ from app.exams.models import (
     OriginalQuestionUserAnswer,
     OriginalQuestionBetweenAnswerItem,
     OriginalQuestionBetweenUserAnswer,
+    Exam,
+    OriginalBetweenQuestion,
+    ComparisonQuestion,
 )
 
 from datetime import datetime
@@ -57,6 +60,12 @@ class StudentExamsHandler:
                 points += user_answer.item.right_answer_points
 
         return points
+
+    def __get_exam_max_points(self, exam: Exam):
+        exam_original_questions = OriginalQuestion.objects.filter(exam=exam)
+        exam_ordinary_questions = OrdinaryQuestion.objects.filter(exam=exam)
+        exam_original_between_questions = OriginalBetweenQuestion.objects.filter(exam=exam)
+        exam_comparison_questions = ComparisonQuestion.objects.filter(exam=exam)
 
     def get_student_exam_results(self, student_exam: StudentExam) -> StudentExamResultsOutputEntity:
         points = self.__get_student_exam_ordinary_questions_points(student_exam=student_exam)
