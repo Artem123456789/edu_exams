@@ -282,6 +282,7 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
 
     text = models.TextField()
     text_answer = models.TextField(null=True, blank=True)
+    text_end = models.TextField(null=True, blank=True)
 
     right_answer_points = models.SmallIntegerField(null=True)
     order_index = models.SmallIntegerField(null=True)

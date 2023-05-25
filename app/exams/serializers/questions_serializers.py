@@ -173,6 +173,7 @@ class OriginalBetweenQuestionItemSerializer(serializers.ModelSerializer):
             "uuid",
             "text",
             "order_index",
+            "text_end",
         ]
 
 
