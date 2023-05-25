@@ -31,6 +31,7 @@ class StudentExamCreateSerializer(serializers.ModelSerializer):
 
 class StudentExamResultsOutputSerializer(BaseSerializer):
     points = serializers.IntegerField()
+    max_points = serializers.IntegerField()
 
 
 class ExamRetrieveSerializer(serializers.ModelSerializer):

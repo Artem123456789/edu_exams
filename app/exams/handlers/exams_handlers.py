@@ -16,6 +16,7 @@ from app.exams.models import (
 )
 
 from datetime import datetime
+from django.db.models import Sum
 
 
 class StudentExamsHandler:
@@ -61,11 +62,34 @@ class StudentExamsHandler:
 
         return points
 
-    def __get_exam_max_points(self, exam: Exam):
-        exam_original_questions = OriginalQuestion.objects.filter(exam=exam)
+    def __get_ordinary_questions_exam_max_points(self, exam: Exam):
         exam_ordinary_questions = OrdinaryQuestion.objects.filter(exam=exam)
-        exam_original_between_questions = OriginalBetweenQuestion.objects.filter(exam=exam)
-        exam_comparison_questions = ComparisonQuestion.objects.filter(exam=exam)
+        points = exam_ordinary_questions.aggregate(Sum('right_answer_points'))['right_answer_points__sum']
+        return points if points else 0
+
+    def __get_original_questions_exam_max_points(self, exam: Exam):
+        exam_original_questions = OriginalQuestion.objects.filter(exam=exam)
+        points = exam_original_questions.aggregate(Sum('right_answer_points'))['right_answer_points__sum']
+        return points if points else 0
+
+    def __get_comparison_questions_exam_max_poins(self, exam: Exam):
+        options = ComparisonQuestionOption.objects.filter(question__exam=exam)
+        points = options.aggregate(Sum('right_answer_points'))['right_answer_points__sum']
+        return points if points else 0
+
+    def __get_original_between_questions_exam_max_points(self, exam: Exam):
+        exam_original_between_questions = OriginalQuestionBetweenAnswerItem.objects.filter(question__exam=exam)
+        points = exam_original_between_questions.aggregate(Sum('right_answer_points'))['right_answer_points__sum']
+
+        return points if points else 0
+
+    def get_exam_max_points(self, exam: Exam):
+        ordinary_questions_sum = self.__get_ordinary_questions_exam_max_points(exam=exam)
+        original_questions_sum = self.__get_original_questions_exam_max_points(exam=exam)
+        comparison_questions_sum = self.__get_comparison_questions_exam_max_poins(exam=exam)
+        original_between_questions_sum = self.__get_original_between_questions_exam_max_points(exam=exam)
+
+        return ordinary_questions_sum + original_questions_sum + comparison_questions_sum + original_between_questions_sum
 
     def get_student_exam_results(self, student_exam: StudentExam) -> StudentExamResultsOutputEntity:
         points = self.__get_student_exam_ordinary_questions_points(student_exam=student_exam)
@@ -73,7 +97,9 @@ class StudentExamsHandler:
         points += self.__get_student_exam_original_questions_points(student_exam=student_exam)
         points += self.__get_student_exam_original_between_questions_points(student_exam=student_exam)
 
-        return StudentExamResultsOutputEntity(points=points)
+        max_exam_points = self.get_exam_max_points(exam=student_exam.exam)
+
+        return StudentExamResultsOutputEntity(points=points, max_points=max_exam_points)
 
     @staticmethod
     def finish_student_exam(student_exam: StudentExam) -> None:
