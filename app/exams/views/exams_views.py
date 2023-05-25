@@ -12,6 +12,7 @@ from app.exams.models import (
     ComparisonQuestionUserAnswer,
     OriginalQuestionUserAnswer,
     OriginalQuestionBetweenUserAnswer,
+    School,
 )
 from rest_framework.viewsets import GenericViewSet
 
@@ -27,6 +28,19 @@ from app.exams.serializers.exams_serializers import (
     StudentExamResultsOutputSerializer,
     ExamListSerializer,
 )
+from app.exams.serializers.school_serializers import SchoolListSerializer
+
+
+class SchoolViewSet(
+    GenericViewSet,
+    generics.ListAPIView,
+):
+    queryset = School.objects.all()
+
+    def get_serializer_class(self):
+        return {
+            "list": SchoolListSerializer,
+        }[self.action]
 
 
 class ExamViewSet(

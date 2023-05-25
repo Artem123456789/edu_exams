@@ -30,5 +30,10 @@ router.register(
     exams_views.OriginalQuestionBetweenUserAnswerViewSet,
     basename="original_question_between_user_answers",
 )
+router.register(
+    "school",
+    exams_views.SchoolViewSet,
+    basename="school",
+)
 
 urlpatterns = router.get_urls()
