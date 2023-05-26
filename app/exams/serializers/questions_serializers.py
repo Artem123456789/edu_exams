@@ -69,6 +69,7 @@ class OrdinaryQuestionSerializer(serializers.ModelSerializer):
             "description",
             "answers",
             "files",
+            "option",
         ]
 
 
@@ -135,6 +136,7 @@ class ComparisonQuestionSerializer(serializers.ModelSerializer):
             "options",
             "option_answers",
             "files",
+            "option",
         ]
 
 
@@ -157,6 +159,7 @@ class OriginalQuestionSerializer(serializers.ModelSerializer):
             "header",
             "description",
             "files",
+            "option",
         ]
 
 
@@ -197,4 +200,5 @@ class OriginalBetweenQuestionSerializer(serializers.ModelSerializer):
             "description",
             "files",
             "items",
+            "option",
         ]
