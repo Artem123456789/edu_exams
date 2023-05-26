@@ -83,6 +83,7 @@ class OrdinaryQuestion(QuestionModel):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
     right_answer_points = models.SmallIntegerField(null=True)
+    option = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Вопрос с одним вариантом ответа")
@@ -157,6 +158,7 @@ class ComparisonQuestion(QuestionModel):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+    option = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Вопрос с сопоставлением ответов")
@@ -222,6 +224,7 @@ class OriginalQuestion(QuestionModel):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
     right_answer_points = models.SmallIntegerField(null=True)
+    option = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Вопрос с ответом пользователя")
@@ -267,6 +270,7 @@ class OriginalBetweenQuestion(QuestionModel):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+    option = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Вопрос с вписыванием между текстом")
