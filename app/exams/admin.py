@@ -1,4 +1,11 @@
+from io import BytesIO
+
+import pandas as pd
 from django.contrib import admin
+from django.http import HttpResponse
+from django.utils import timezone
+
+from .admin_reports import exam_report
 from .models import (
     School,
     Subject,
@@ -26,6 +33,7 @@ from .models import (
     OriginalBetweenQuestionFile,
 )
 
+from transliterate.utils import _
 
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
@@ -68,6 +76,27 @@ class ExamAdmin(admin.ModelAdmin):
     search_fields = (
         "name",
     )
+
+    actions = (
+        "report",
+    )
+
+    def _init_report(self, action, queryset, filename):
+        with BytesIO() as b:
+            writer = pd.ExcelWriter(b, engine="xlsxwriter")
+            df = action(queryset)
+            df.to_excel(writer, "Page1")
+            writer.save()
+            xlsx_data = b.getvalue()
+            response = HttpResponse(
+                xlsx_data, content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+            response["Content-Disposition"] = f'attachment; filename="{timezone.now().date()}-{filename}"'
+            return response
+
+    @admin.action(description=_("Отчет о результатах тестирования"))
+    def report(self, request, queryset):
+        return self._init_report(action=exam_report, queryset=queryset, filename="report.xlsx")
 
 
 @admin.register(OrdinaryQuestion)

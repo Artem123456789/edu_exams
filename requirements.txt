@@ -14,3 +14,6 @@ whitenoise==6.2.0
 dj-database-url==1.0.0
 django-cors-headers==3.13.0
 cryptography==38.0.3
+pandas==1.5.0
+transliterate==1.10.2
+XlsxWriter==3.0.3
