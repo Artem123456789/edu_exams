@@ -46,7 +46,7 @@ class Subject(NamedModel):
         Дисциплина
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=False)
 
     class Meta:
         verbose_name = _("Дисциплина")
@@ -61,7 +61,7 @@ class Exam(NamedModel):
         Экзамен
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=False)
 
     #  Ограничение по времени для сдачи экзамена
     hours_to_pass = models.SmallIntegerField(null=True)
@@ -83,7 +83,7 @@ class OrdinaryQuestion(QuestionModel):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
     right_answer_points = models.SmallIntegerField(null=True)
-    option = models.TextField(null=True, blank=True)
+    option = models.TextField(null=True, blank=False)
 
     class Meta:
         verbose_name = _("Вопрос с одним вариантом ответа")
@@ -95,7 +95,7 @@ class OrdinaryQuestionAnswer(models.Model):
         Ответ на вопрос с одним вариантом ответа
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True, blank=False)
     text = models.TextField()
     is_correct = models.BooleanField()
 
@@ -113,7 +113,7 @@ class StudentExam(TimeStampedModel):
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     user_name = models.CharField(max_length=100, default="")
-    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True, blank=False)
 
     end_datetime = models.DateTimeField(null=True)
 
@@ -140,9 +140,9 @@ class OrdinaryQuestionUserAnswer(TimeStampedModel):
         Ответ пользователя на вопрос с одним вариантом ответа
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
-    question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True)
-    answer = models.ForeignKey(OrdinaryQuestionAnswer, on_delete=models.SET_NULL, null=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True, blank=False)
+    question = models.ForeignKey(OrdinaryQuestion, on_delete=models.SET_NULL, null=True, blank=False)
+    answer = models.ForeignKey(OrdinaryQuestionAnswer, on_delete=models.SET_NULL, null=True, blank=False)
 
     class Meta:
         verbose_name = _("Ответ пользователя на вопрос с одним вариантом ответа")
@@ -157,8 +157,8 @@ class ComparisonQuestion(QuestionModel):
         Вопрос с сопоставлением ответов
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
-    option = models.TextField(null=True, blank=True)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True, blank=False)
+    option = models.TextField(null=True, blank=False)
 
     class Meta:
         verbose_name = _("Вопрос с сопоставлением ответов")
@@ -170,7 +170,7 @@ class ComparisonQuestionOptionAnswer(models.Model):
         Ответ на опцию вопроса с сопоставлением
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True, blank=False)
     text = models.TextField()
 
     class Meta:
@@ -186,9 +186,14 @@ class ComparisonQuestionOption(models.Model):
         Опция вопроса с сопоставлением ответа
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(ComparisonQuestion, on_delete=models.SET_NULL, null=True, blank=False)
     text = models.TextField()
-    option_answer = models.OneToOneField(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True)
+    option_answer = models.OneToOneField(
+        ComparisonQuestionOptionAnswer,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False
+    )
 
     right_answer_points = models.SmallIntegerField(null=True)
 
@@ -205,9 +210,9 @@ class ComparisonQuestionUserAnswer(TimeStampedModel):
         Ответ пользователя на вопрос с сопоставлением ответов
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
-    option = models.ForeignKey(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True)
-    option_answer = models.ForeignKey(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True, blank=False)
+    option = models.ForeignKey(ComparisonQuestionOption, on_delete=models.SET_NULL, null=True, blank=False)
+    option_answer = models.ForeignKey(ComparisonQuestionOptionAnswer, on_delete=models.SET_NULL, null=True, blank=False)
 
     class Meta:
         verbose_name = _("Ответ пользователя на вопрос с сопоставлением ответов")
@@ -222,9 +227,9 @@ class OriginalQuestion(QuestionModel):
         Вопрос с ответом пользователя
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
-    right_answer_points = models.SmallIntegerField(null=True)
-    option = models.TextField(null=True, blank=True)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True, blank=False)
+    right_answer_points = models.SmallIntegerField(null=True, blank=False)
+    option = models.TextField(null=True, blank=False)
 
     class Meta:
         verbose_name = _("Вопрос с ответом пользователя")
@@ -236,7 +241,7 @@ class OriginalQuestionAnswer(models.Model):
         Ответ на вопрос с ответом пользователя
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True, blank=False)
     text = models.TextField()
 
     class Meta:
@@ -252,8 +257,8 @@ class OriginalQuestionUserAnswer(TimeStampedModel):
         Ответ пользователя на вопрос c ответом пользователя
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
-    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True, blank=False)
+    question = models.ForeignKey(OriginalQuestion, on_delete=models.SET_NULL, null=True, blank=False)
     text = models.TextField()
 
     class Meta:
@@ -269,8 +274,8 @@ class OriginalBetweenQuestion(QuestionModel):
         Вопрос с вписыванием между текстом
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True)
-    option = models.TextField(null=True, blank=True)
+    exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True, blank=False)
+    option = models.TextField(null=True, blank=False)
 
     class Meta:
         verbose_name = _("Вопрос с вписыванием между текстом")
@@ -282,14 +287,14 @@ class OriginalQuestionBetweenAnswerItem(models.Model):
         Элемент вопроса со вписыванием между текстом
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    question = models.ForeignKey(OriginalBetweenQuestion, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(OriginalBetweenQuestion, on_delete=models.SET_NULL, null=True, blank=False)
 
     text = models.TextField()
-    text_answer = models.TextField(null=True, blank=True)
-    text_end = models.TextField(null=True, blank=True)
+    text_answer = models.TextField(null=True, blank=False)
+    text_end = models.TextField(null=True, blank=False)
 
-    right_answer_points = models.SmallIntegerField(null=True)
-    order_index = models.SmallIntegerField(null=True)
+    right_answer_points = models.SmallIntegerField(null=True, blank=False)
+    order_index = models.SmallIntegerField(null=True, blank=False)
 
     class Meta:
         verbose_name = _("Элемент вопроса со вписыванием между текстом")
@@ -304,8 +309,8 @@ class OriginalQuestionBetweenUserAnswer(models.Model):
         Ответ пользователя на элемент вопроса со вписыванием между текстом
     """
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    item = models.ForeignKey(OriginalQuestionBetweenAnswerItem, on_delete=models.SET_NULL, null=True)
-    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True)
+    item = models.ForeignKey(OriginalQuestionBetweenAnswerItem, on_delete=models.SET_NULL, null=True, blank=False)
+    student_exam = models.ForeignKey(StudentExam, on_delete=models.SET_NULL, null=True, blank=False)
 
     text = models.TextField()
 
@@ -326,7 +331,7 @@ class OrdinaryQuestionFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     question = models.ForeignKey(
-        OrdinaryQuestion, on_delete=models.CASCADE, related_name="files"
+        OrdinaryQuestion, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_ordinary_question_upload)
 
@@ -342,7 +347,7 @@ class ComparisonQuestionFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     question = models.ForeignKey(
-        ComparisonQuestion, on_delete=models.CASCADE, related_name="files"
+        ComparisonQuestion, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_comparison_question_upload)
 
@@ -358,7 +363,7 @@ class OriginalQuestionFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     question = models.ForeignKey(
-        OriginalQuestion, on_delete=models.CASCADE, related_name="files"
+        OriginalQuestion, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_ordinary_question_upload)
 
@@ -374,7 +379,7 @@ class OrdinaryQuestionAnswerFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     answer = models.ForeignKey(
-        OrdinaryQuestionAnswer, on_delete=models.CASCADE, related_name="files"
+        OrdinaryQuestionAnswer, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_ordinary_answer_upload)
 
@@ -390,7 +395,7 @@ class ComparisonQuestionOptionFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     option = models.ForeignKey(
-        ComparisonQuestionOption, on_delete=models.CASCADE, related_name="files"
+        ComparisonQuestionOption, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_comparison_option_upload)
 
@@ -406,7 +411,7 @@ class ComparisonQuestionOptionAnswerFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     option_answer = models.ForeignKey(
-        ComparisonQuestionOptionAnswer, on_delete=models.CASCADE, related_name="files"
+        ComparisonQuestionOptionAnswer, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_comparison_option_answer_upload)
 
@@ -422,7 +427,7 @@ class OriginalBetweenQuestionFile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     type = models.PositiveSmallIntegerField(choices=FileType.choices(), default=FileType.TYPE_IMAGE)
     question = models.ForeignKey(
-        OriginalBetweenQuestion, on_delete=models.CASCADE, related_name="files"
+        OriginalBetweenQuestion, on_delete=models.CASCADE, related_name="files", blank=False
     )
     file = models.FileField(upload_to=file_original_between_question_upload)
 
