@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'exam.jpg' %}" height="40px" />
+    </a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'admin_colors.css' %}"/>
+
+<style type="text/css">
+    body:before {
+        display: block;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+        z-index: 1001;
+        line-height: 35px;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: white;
+        content: "{{ ENVIRONMENT_NAME }}";
+        background-color: {{ ENVIRONMENT_COLOR }};
+    }
+</style>
+
+{% endblock %}
