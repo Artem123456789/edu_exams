@@ -150,56 +150,6 @@ class OrdinaryQuestionUserAnswerAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(ComparisonQuestion)
-class ComparisonQuestionAdmin(admin.ModelAdmin):
-    list_display = (
-        "header",
-    )
-
-    list_filter = (
-        "exam",
-    )
-
-    search_fields = (
-        "header",
-    )
-
-
-@admin.register(ComparisonQuestionOption)
-class ComparisonQuestionOptionAdmin(admin.ModelAdmin):
-    list_display = (
-        "text",
-    )
-
-    list_filter = (
-        "text",
-    )
-
-
-@admin.register(ComparisonQuestionOptionAnswer)
-class ComparisonQuestionOptionAnswerAdmin(admin.ModelAdmin):
-    list_display = (
-        "text",
-    )
-
-    list_filter = (
-        "text",
-    )
-
-
-@admin.register(ComparisonQuestionUserAnswer)
-class ComparisonQuestionUserAnswerAdmin(admin.ModelAdmin):
-    list_display = (
-        "option",
-        "option_answer",
-    )
-
-    list_filter = (
-        "option",
-        "option_answer",
-    )
-
-
 @admin.register(OrdinaryQuestionFile)
 class OrdinaryQuestionFileModelAdmin(admin.ModelAdmin):
     list_display = (
@@ -207,35 +157,10 @@ class OrdinaryQuestionFileModelAdmin(admin.ModelAdmin):
         "file",
     )
 
-
-@admin.register(ComparisonQuestionFile)
-class ComparisonQuestionFileModelAdmin(admin.ModelAdmin):
-    list_display = (
-        "question",
-        "file",
-    )
-
-
 @admin.register(OrdinaryQuestionAnswerFile)
 class OrdinaryQuestionAnswerFileAdmin(admin.ModelAdmin):
     list_display = (
         "answer",
-        "file",
-    )
-
-
-@admin.register(ComparisonQuestionOptionFile)
-class ComparisonQuestionOptionFileAdmin(admin.ModelAdmin):
-    list_display = (
-        "option",
-        "file",
-    )
-
-
-@admin.register(ComparisonQuestionOptionAnswerFile)
-class ComparisonQuestionOptionAnswerFileAdmin(admin.ModelAdmin):
-    list_display = (
-        "option_answer",
         "file",
     )
 
