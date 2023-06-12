@@ -53,7 +53,7 @@ class Subject(NamedModel):
         verbose_name_plural = _("Дисциплины")
 
     def __str__(self):
-        return f"{self.name} {self.school.name}"
+        return f"{self.name if self.name else ''} {self.school.name}"
 
 
 class Exam(NamedModel):
